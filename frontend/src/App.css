@@ -1,0 +1,73 @@
+/* ==================== APP CONTAINER ==================== */
+.App {
+  min-height: 100vh;
+  background: var(--erp-bg-soft);
+}
+
+/* ==================== ANIMACIONES GLOBALES ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Aplicar animación de entrada a las páginas */
+.App > * {
+  animation: fadeIn 0.5s ease;
+}
+
+/* ==================== SCROLLBAR PERSONALIZADO ==================== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--erp-bg-soft);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--erp-secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--erp-primary);
+}
+
+/* ==================== SELECCIÓN DE TEXTO ==================== */
+::selection {
+  background: var(--erp-highlight);
+  color: var(--erp-primary);
+}
+
+::-moz-selection {
+  background: var(--erp-highlight);
+  color: var(--erp-primary);
+}

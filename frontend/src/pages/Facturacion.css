@@ -1,0 +1,179 @@
+.facturacion-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.uuid-cell {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--erp-secondary);
+}
+
+.ventas-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--erp-border);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.venta-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px solid var(--erp-border);
+}
+
+.venta-item:last-child {
+  border-bottom: none;
+}
+
+.venta-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.venta-item label {
+  margin: 0;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* Estilos para formulario mejorado */
+.form-section-title {
+  color: var(--erp-primary);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--erp-secondary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+}
+
+.modal-content h3 {
+  color: var(--erp-primary);
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--erp-border);
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+  background: var(--erp-bg-main);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--erp-secondary);
+  box-shadow: 0 0 0 2px rgba(86, 124, 141, 0.15);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--erp-primary);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.text-muted {
+  color: var(--erp-secondary);
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Estilos mejorados para badges */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background-color: var(--erp-success);
+  color: white;
+}
+
+.badge-warning {
+  background-color: var(--erp-warning);
+  color: var(--erp-primary);
+}
+
+.badge-secondary {
+  background-color: var(--erp-secondary);
+  color: white;
+}
+
+/* Mejorar tabla de facturas */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--erp-bg-main);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--erp-border);
+}
+
+.table thead {
+  background-color: var(--erp-primary);
+  color: white;
+}
+
+.table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--erp-border);
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--erp-border);
+}
+
+.table tbody tr:hover {
+  background-color: var(--erp-highlight);
+}
+
+.text-bold {
+  font-weight: 600;
+  color: var(--erp-primary);
+}

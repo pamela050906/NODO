@@ -1,0 +1,195 @@
+/**
+ * Paleta de colores corporativa - Sistema ERP (única fuente de verdad)
+ * Uso: siempre var(--erp-*) en CSS; en JS usar utils/constants.js COLORES.
+ *
+ * Primario #2f4156: barra superior, menús, títulos, cabeceras tabla
+ * Secundario #567c8d: botones destacados, iconos activos, enlaces
+ * Fondo principal #ffffff: cards, formularios, modales
+ * Fondo suave #f5efeb: área de trabajo, paneles, card-footer
+ * Resaltado #c8d9e6: hover, bordes suaves, notificaciones
+ */
+:root {
+  /* Paleta principal */
+  --erp-primary: #2f4156;
+  --erp-secondary: #567c8d;
+  --erp-bg-main: #ffffff;
+  --erp-bg-soft: #f5efeb;
+  --erp-highlight: #c8d9e6;
+
+  /* Override Bootstrap 5 para usar la paleta ERP */
+  --bs-primary: #2f4156;
+  --bs-primary-rgb: 47, 65, 86;
+  --bs-secondary: #567c8d;
+  --bs-secondary-rgb: 86, 124, 141;
+
+  /* Enlaces y estados activos usan secundario */
+  --bs-link-color: #567c8d;
+  --bs-link-hover-color: #456a7a;
+  --bs-link-color-rgb: 86, 124, 141;
+
+  /* Bordes suaves alineados al tema */
+  --bs-border-color: #c8d9e6;
+  --erp-border: #c8d9e6;
+
+  /* Tablas: cabecera primario, hover highlight */
+  --erp-table-header-bg: #2f4156;
+  --erp-table-hover-bg: #c8d9e6;
+
+  /* Sombras sutiles */
+  --erp-shadow-sm: 0 1px 3px rgba(47, 65, 86, 0.08);
+  --erp-shadow: 0 2px 8px rgba(47, 65, 86, 0.1);
+  --erp-shadow-hover: 0 4px 12px rgba(47, 65, 86, 0.12);
+
+  /* Semánticos (éxito, error, advertencia, info) unificados en el tema */
+  --erp-success: #28a745;
+  --erp-success-bg: #d4edda;
+  --erp-success-border: #c3e6cb;
+  --erp-success-text: #155724;
+  --erp-danger: #dc3545;
+  --erp-danger-bg: #f8d7da;
+  --erp-danger-border: #f5c6cb;
+  --erp-danger-text: #721c24;
+  --erp-warning: #ffc107;
+  --erp-warning-bg: #fff3cd;
+  --erp-warning-border: #ffeaa7;
+  --erp-warning-text: #856404;
+  --erp-info: #17a2b8;
+  --erp-info-bg: #d1ecf1;
+  --erp-info-border: #bee5eb;
+  --erp-info-text: #0c5460;
+
+  /* Hover del primario (oscurecimiento) */
+  --erp-primary-hover: #3d5266;
+}
+
+/* Navbar: barra superior con color primario */
+.navbar.bg-erp-primary,
+.navbar.navbar-erp {
+  background-color: var(--erp-primary) !important;
+}
+
+.navbar-dark.navbar-erp .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar.navbar-erp .navbar-brand,
+.navbar.navbar-erp .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navbar.navbar-erp .nav-link:hover,
+.navbar.navbar-erp .nav-link:focus {
+  color: #fff !important;
+  background-color: var(--erp-highlight) !important;
+  border-radius: 6px;
+}
+
+.navbar.navbar-erp .nav-link.active {
+  background-color: var(--erp-secondary) !important;
+  color: #fff !important;
+}
+
+.navbar.navbar-erp .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Botones primarios y secundarios con paleta */
+.btn-primary {
+  background-color: var(--erp-primary) !important;
+  border-color: var(--erp-primary) !important;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--erp-primary-hover) !important;
+  border-color: var(--erp-primary-hover) !important;
+  box-shadow: var(--erp-shadow-hover);
+}
+
+.btn-secondary,
+.btn-outline-primary {
+  color: var(--erp-secondary);
+  border-color: var(--erp-secondary);
+}
+
+.btn-secondary:not(.bg-secondary) {
+  background-color: var(--erp-secondary) !important;
+  border-color: var(--erp-secondary) !important;
+  color: #fff !important;
+}
+
+.btn-secondary:hover:not(:disabled),
+.btn-outline-primary:hover:not(:disabled) {
+  background-color: var(--erp-highlight) !important;
+  border-color: var(--erp-secondary) !important;
+  color: var(--erp-primary) !important;
+}
+
+/* Cards y paneles: fondo suave */
+.card.bg-erp-soft,
+.panel-erp {
+  background-color: var(--erp-bg-soft) !important;
+  border-color: var(--erp-border) !important;
+}
+
+/* Hover genérico en filas y cards */
+.table-hover tbody tr:hover,
+.table tbody tr:hover {
+  background-color: var(--erp-highlight) !important;
+}
+
+.card-hover:hover,
+.stat-card:hover {
+  border-color: var(--erp-highlight) !important;
+  box-shadow: var(--erp-shadow-hover) !important;
+}
+
+/* Títulos principales con color primario */
+.page-title,
+.card-title:not([class*="text-success"]):not([class*="text-white"]):not([class*="text-danger"]):not([class*="text-warning"]) {
+  color: var(--erp-primary) !important;
+}
+
+.text-primary {
+  color: var(--erp-primary) !important;
+}
+
+/* Enlaces */
+a {
+  color: var(--erp-secondary);
+}
+
+a:hover {
+  color: var(--erp-primary);
+}
+
+/* Focus accesible */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--erp-secondary);
+  outline-offset: 2px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--erp-secondary);
+  box-shadow: 0 0 0 0.2rem rgba(86, 124, 141, 0.25);
+}
+
+/* Card footer y elementos secundarios */
+.card-footer {
+  background-color: var(--erp-bg-soft) !important;
+  border-top: 1px solid var(--erp-border) !important;
+}
+
+/* Scrollbar con paleta */
+::-webkit-scrollbar-thumb {
+  background: var(--erp-secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--erp-primary);
+}

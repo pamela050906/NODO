@@ -1,0 +1,26 @@
+# Requirements optimizado para Windows (wheels precompilados)
+# Usar este archivo si requirements.txt falla con errores de compilación
+
+# Core Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Database - Versiones con mejor soporte Windows
+sqlalchemy==2.0.25
+# asyncpg puede requerir compilación, intentar versión más antigua con wheel
+asyncpg==0.28.0
+# psycopg2-binary - omitir si falla, no es crítico
+# psycopg2-binary==2.9.9
+alembic==1.13.1
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==3.2.2
+python-multipart==0.0.6
+
+# Utilities
+python-dotenv==1.0.0
+qrcode[pil]==7.4.2

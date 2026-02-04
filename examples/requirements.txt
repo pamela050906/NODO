@@ -1,0 +1,2 @@
+# Dependencias para los ejemplos
+requests==2.31.0

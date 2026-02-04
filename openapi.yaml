@@ -1,0 +1,1046 @@
+openapi: 3.0.3
+info:
+  title: ERP/POS API
+  description: |
+    Sistema ERP de punto de venta y gestión de almacén.
+    
+    ## Características principales
+    - Autenticación JWT con roles
+    - Gestión de productos con variantes
+    - Control de inventario en tiempo real
+    - Punto de venta con precios automáticos (mayoreo/menudeo)
+    - Facturación SAT preparada
+    - Multi-caja y multi-usuario
+    
+    ## Arquitectura
+    - Backend: FastAPI + PostgreSQL
+    - Frontend: React
+    - Base de datos con lógica de negocio centralizada
+    
+  version: 1.0.0
+  contact:
+    name: Soporte Técnico
+    email: soporte@erp.com
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Desarrollo local
+  - url: https://api.erp.com/api/v1
+    description: Producción
+
+tags:
+  - name: Autenticación
+    description: Login y gestión de sesiones
+  - name: POS
+    description: Operaciones de punto de venta
+  - name: Productos
+    description: Catálogo de productos y variantes
+  - name: Inventario
+    description: Movimientos y control de stock
+  - name: Ventas
+    description: Gestión de ventas y reportes
+  - name: Facturación
+    description: Generación de CFDI y tickets
+  - name: Usuarios
+    description: Administración de usuarios y roles
+
+# ============================================
+# SEGURIDAD
+# ============================================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Token JWT obtenido del endpoint /auth/login.
+        Incluye en el header: `Authorization: Bearer {token}`
+
+  # ============================================
+  # ESQUEMAS
+  # ============================================
+  schemas:
+    # --- Errores ---
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: "STOCK_INSUFFICIENT"
+        message:
+          type: string
+          example: "Stock insuficiente para completar la operación"
+        details:
+          type: object
+          additionalProperties: true
+
+    # --- Auth ---
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: "admin"
+        password:
+          type: string
+          format: password
+          example: "admin123"
+
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        token_type:
+          type: string
+          example: "bearer"
+        expires_in:
+          type: integer
+          example: 3600
+        user:
+          $ref: '#/components/schemas/UserInfo'
+
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: "admin"
+        email:
+          type: string
+          example: "admin@erp.com"
+        rol:
+          type: string
+          enum: [ADMIN, CAJERO]
+          example: "ADMIN"
+        punto_venta_id:
+          type: integer
+          nullable: true
+          example: 1
+
+    # --- Productos y Variantes ---
+    VarianteBarcodeResponse:
+      type: object
+      properties:
+        variante_id:
+          type: integer
+          example: 3
+        producto_id:
+          type: integer
+          example: 1
+        nombre_producto:
+          type: string
+          example: "Playera Básica"
+        nombre_variante:
+          type: string
+          example: "Playera Negra Talla M"
+        codigo_barras:
+          type: string
+          example: "7501234567890"
+        sku:
+          type: string
+          example: "PLAY-NEG-M"
+        precio_menudeo:
+          type: number
+          format: decimal
+          example: 600.00
+        precio_mayoreo:
+          type: number
+          format: decimal
+          example: 520.00
+        umbral_mayoreo:
+          type: integer
+          example: 12
+        stock_actual:
+          type: integer
+          example: 42
+        activo:
+          type: boolean
+          example: true
+
+    ProductoDetalle:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          type: string
+        marca:
+          type: string
+        activo:
+          type: boolean
+        variantes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VarianteBarcodeResponse'
+
+    # --- Ventas ---
+    VentaCreateRequest:
+      type: object
+      required:
+        - punto_venta_id
+        - metodo_pago
+      properties:
+        punto_venta_id:
+          type: integer
+          example: 1
+        cliente_nombre:
+          type: string
+          nullable: true
+          example: "Juan Pérez"
+        metodo_pago:
+          type: string
+          enum: [EFECTIVO, TARJETA, TRANSFERENCIA]
+          example: "EFECTIVO"
+
+    VentaCreateResponse:
+      type: object
+      properties:
+        venta_id:
+          type: integer
+          example: 101
+        folio:
+          type: string
+          example: "PV1-000101"
+        fecha_creacion:
+          type: string
+          format: date-time
+        estado:
+          type: string
+          enum: [ABIERTA, CERRADA, CANCELADA]
+          example: "ABIERTA"
+
+    VentaItemAddRequest:
+      type: object
+      required:
+        - variante_id
+        - cantidad
+      properties:
+        variante_id:
+          type: integer
+          example: 3
+        cantidad:
+          type: integer
+          minimum: 1
+          example: 5
+        descuento_manual:
+          type: number
+          format: decimal
+          minimum: 0
+          example: 0.00
+          description: Descuento adicional aplicado manualmente (requiere permisos)
+
+    VentaItemAddResponse:
+      type: object
+      properties:
+        detalle_id:
+          type: integer
+          example: 1
+        variante_id:
+          type: integer
+          example: 3
+        cantidad:
+          type: integer
+          example: 5
+        precio_unitario_aplicado:
+          type: number
+          format: decimal
+          example: 600.00
+        regla_precio:
+          type: string
+          enum: [MENUDEO, MAYOREO]
+          example: "MENUDEO"
+        subtotal:
+          type: number
+          format: decimal
+          example: 3000.00
+        stock_restante:
+          type: integer
+          example: 37
+        cantidad_total_producto_en_venta:
+          type: integer
+          example: 5
+          description: Cantidad acumulada de este producto en toda la venta
+
+    VentaDetalle:
+      type: object
+      properties:
+        venta_id:
+          type: integer
+        folio:
+          type: string
+        fecha_venta:
+          type: string
+          format: date-time
+        cliente_nombre:
+          type: string
+          nullable: true
+        metodo_pago:
+          type: string
+        estado:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              detalle_id:
+                type: integer
+              nombre_producto:
+                type: string
+              nombre_variante:
+                type: string
+              cantidad:
+                type: integer
+              precio_unitario:
+                type: number
+              subtotal:
+                type: number
+        subtotal:
+          type: number
+        descuento_total:
+          type: number
+        total:
+          type: number
+        usuario:
+          type: string
+        punto_venta:
+          type: string
+
+    VentaCerrarResponse:
+      type: object
+      properties:
+        venta_id:
+          type: integer
+        estado:
+          type: string
+          example: "CERRADA"
+        total:
+          type: number
+          example: 3000.00
+        ticket_generado:
+          type: boolean
+          example: true
+        facturable:
+          type: boolean
+          example: true
+
+    # --- Inventario ---
+    MovimientoInventarioRequest:
+      type: object
+      required:
+        - variante_id
+        - tipo
+        - cantidad
+        - motivo
+      properties:
+        variante_id:
+          type: integer
+          example: 3
+        tipo:
+          type: string
+          enum: [ENTRADA, SALIDA, AJUSTE]
+          example: "ENTRADA"
+        cantidad:
+          type: integer
+          minimum: 1
+          example: 20
+        motivo:
+          type: string
+          example: "Compra a proveedor XYZ"
+        referencia:
+          type: string
+          nullable: true
+          example: "OC-12345"
+
+    StockVariante:
+      type: object
+      properties:
+        variante_id:
+          type: integer
+        nombre_producto:
+          type: string
+        nombre_variante:
+          type: string
+        sku:
+          type: string
+        stock_actual:
+          type: integer
+        stock_minimo:
+          type: integer
+        estado_stock:
+          type: string
+          enum: [OK, BAJO, CRITICO]
+
+    # --- Facturación ---
+    FacturaCreateRequest:
+      type: object
+      required:
+        - ventas_ids
+        - rfc_receptor
+        - uso_cfdi
+      properties:
+        ventas_ids:
+          type: array
+          items:
+            type: integer
+          example: [101, 102]
+        rfc_receptor:
+          type: string
+          example: "XAXX010101000"
+        uso_cfdi:
+          type: string
+          example: "G03"
+        nombre_receptor:
+          type: string
+          example: "PUBLICO EN GENERAL"
+        tipo_factura:
+          type: string
+          enum: [INDIVIDUAL, GLOBAL]
+          example: "INDIVIDUAL"
+
+    FacturaResponse:
+      type: object
+      properties:
+        factura_id:
+          type: integer
+        uuid:
+          type: string
+          nullable: true
+        folio:
+          type: string
+        serie:
+          type: string
+        estado:
+          type: string
+          enum: [BORRADOR, TIMBRADA, CANCELADA]
+        total:
+          type: number
+        xml_url:
+          type: string
+          nullable: true
+        pdf_url:
+          type: string
+          nullable: true
+
+# ============================================
+# ENDPOINTS
+# ============================================
+paths:
+  # ============================================
+  # AUTENTICACIÓN
+  # ============================================
+  /auth/login:
+    post:
+      tags:
+        - Autenticación
+      summary: Iniciar sesión
+      description: |
+        Autentica un usuario y devuelve un token JWT.
+        El token debe incluirse en todas las peticiones protegidas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/me:
+    get:
+      tags:
+        - Autenticación
+      summary: Obtener información del usuario actual
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Información del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          description: No autenticado
+
+  # ============================================
+  # POS - FLUJO CRÍTICO
+  # ============================================
+  /pos/barcode/{codigo}:
+    get:
+      tags:
+        - POS
+      summary: Buscar producto por código de barras
+      description: |
+        Endpoint optimizado para POS. Escanea un código de barras y devuelve
+        toda la información necesaria para agregarlo a una venta.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: codigo
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "7501234567890"
+      responses:
+        '200':
+          description: Variante encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VarianteBarcodeResponse'
+        '404':
+          description: Código de barras no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ============================================
+  # VENTAS
+  # ============================================
+  /ventas:
+    post:
+      tags:
+        - Ventas
+      summary: Crear una nueva venta
+      description: |
+        Crea una venta nueva en estado ABIERTA.
+        Esta es la primera operación del flujo POS.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VentaCreateRequest'
+      responses:
+        '201':
+          description: Venta creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VentaCreateResponse'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Ventas
+      summary: Listar ventas
+      description: Obtiene un listado de ventas con filtros opcionales
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          schema:
+            type: string
+            enum: [ABIERTA, CERRADA, CANCELADA]
+        - name: punto_venta_id
+          in: query
+          schema:
+            type: integer
+        - name: fecha_desde
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: fecha_hasta
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Lista de ventas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VentaDetalle'
+
+  /ventas/{venta_id}:
+    get:
+      tags:
+        - Ventas
+      summary: Obtener detalle de una venta
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: venta_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle de la venta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VentaDetalle'
+        '404':
+          description: Venta no encontrada
+
+  /ventas/{venta_id}/items:
+    post:
+      tags:
+        - Ventas
+      summary: Agregar producto a la venta
+      description: |
+        Agrega un producto (variante) a la venta.
+        
+        **La base de datos:**
+        - Valida stock disponible
+        - Aplica precio automático (mayoreo si cantidad total >= umbral)
+        - Bloquea inventario
+        - Calcula subtotal
+        
+        **Importante:** El precio NO viene del frontend, se calcula en PostgreSQL.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: venta_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VentaItemAddRequest'
+      responses:
+        '201':
+          description: Producto agregado a la venta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VentaItemAddResponse'
+        '409':
+          description: Stock insuficiente o venta cerrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                stock_insuficiente:
+                  value:
+                    code: "STOCK_INSUFFICIENT"
+                    message: "Stock insuficiente. Disponible: 2, solicitado: 5"
+                venta_cerrada:
+                  value:
+                    code: "SALE_CLOSED"
+                    message: "No se pueden agregar productos a una venta cerrada"
+
+  /ventas/{venta_id}/items/{detalle_id}:
+    delete:
+      tags:
+        - Ventas
+      summary: Eliminar producto de la venta
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: venta_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: detalle_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Producto eliminado
+        '404':
+          description: Detalle no encontrado
+        '409':
+          description: Venta cerrada
+
+  /ventas/{venta_id}/cerrar:
+    post:
+      tags:
+        - Ventas
+      summary: Cerrar venta
+      description: |
+        Cierra la venta y ejecuta el proceso de finalización:
+        - Descuenta inventario definitivamente
+        - Genera ticket
+        - Marca como facturable
+        - Cambia estado a CERRADA
+        
+        **Importante:** Una vez cerrada, no se puede modificar.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: venta_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Venta cerrada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VentaCerrarResponse'
+        '409':
+          description: Venta ya cerrada o sin items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /ventas/{venta_id}/cancelar:
+    post:
+      tags:
+        - Ventas
+      summary: Cancelar venta
+      description: |
+        Cancela una venta ABIERTA.
+        Libera el inventario bloqueado.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: venta_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Venta cancelada
+        '409':
+          description: Venta ya cerrada (no se puede cancelar)
+
+  # ============================================
+  # PRODUCTOS
+  # ============================================
+  /productos:
+    get:
+      tags:
+        - Productos
+      summary: Listar productos
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: categoria
+          in: query
+          schema:
+            type: string
+        - name: buscar
+          in: query
+          schema:
+            type: string
+          description: Búsqueda por nombre o SKU
+        - name: activo
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductoDetalle'
+
+  /productos/{producto_id}:
+    get:
+      tags:
+        - Productos
+      summary: Obtener detalle de producto
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: producto_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle del producto con todas sus variantes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductoDetalle'
+
+  # ============================================
+  # INVENTARIO
+  # ============================================
+  /inventario/movimientos:
+    post:
+      tags:
+        - Inventario
+      summary: Registrar movimiento de inventario
+      description: |
+        Registra una entrada, salida o ajuste de inventario.
+        Las salidas por venta se registran automáticamente, esto es para:
+        - Compras a proveedores (ENTRADA)
+        - Mermas (SALIDA)
+        - Ajustes (AJUSTE)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovimientoInventarioRequest'
+      responses:
+        '201':
+          description: Movimiento registrado
+        '409':
+          description: Stock insuficiente para salida
+
+  /inventario/stock:
+    get:
+      tags:
+        - Inventario
+      summary: Consultar stock de variantes
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          schema:
+            type: string
+            enum: [OK, BAJO, CRITICO]
+          description: Filtrar por estado de stock
+      responses:
+        '200':
+          description: Listado de stock
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockVariante'
+
+  /inventario/stock/bajo:
+    get:
+      tags:
+        - Inventario
+      summary: Productos con stock bajo
+      description: Devuelve variantes con stock <= stock_minimo
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Productos con stock bajo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockVariante'
+
+  # ============================================
+  # FACTURACIÓN
+  # ============================================
+  /facturas:
+    post:
+      tags:
+        - Facturación
+      summary: Crear factura (borrador)
+      description: |
+        Crea una factura a partir de una o varias ventas.
+        Estado inicial: BORRADOR.
+        Para timbrar, usar POST /facturas/{id}/timbrar
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacturaCreateRequest'
+      responses:
+        '201':
+          description: Factura creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaResponse'
+
+  /facturas/{factura_id}:
+    get:
+      tags:
+        - Facturación
+      summary: Obtener detalle de factura
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: factura_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle de factura
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaResponse'
+
+  /facturas/{factura_id}/timbrar:
+    post:
+      tags:
+        - Facturación
+      summary: Timbrar factura con PAC
+      description: |
+        Envía la factura al PAC para obtener el UUID y el XML/PDF timbrado.
+        Solo aplica a facturas en estado BORRADOR.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: factura_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Factura timbrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaResponse'
+        '409':
+          description: Factura ya timbrada o error del PAC
+
+  /facturas/global/tarjetas:
+    post:
+      tags:
+        - Facturación
+      summary: Generar factura global de ventas con tarjeta
+      description: |
+        Genera una factura global agrupando todas las ventas con método de pago TARJETA
+        en un rango de fechas (típicamente día completo).
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fecha_desde
+                - fecha_hasta
+              properties:
+                fecha_desde:
+                  type: string
+                  format: date
+                  example: "2026-01-14"
+                fecha_hasta:
+                  type: string
+                  format: date
+                  example: "2026-01-14"
+                punto_venta_id:
+                  type: integer
+                  nullable: true
+      responses:
+        '201':
+          description: Factura global creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaResponse'
+
+  # ============================================
+  # USUARIOS (ADMIN)
+  # ============================================
+  /usuarios:
+    get:
+      tags:
+        - Usuarios
+      summary: Listar usuarios
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfo'
+
+  # ============================================
+  # HEALTH CHECK
+  # ============================================
+  /health:
+    get:
+      tags:
+        - Sistema
+      summary: Health check
+      description: Verifica que el API está funcionando
+      responses:
+        '200':
+          description: API funcionando
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time

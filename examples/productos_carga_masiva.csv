@@ -1,0 +1,11 @@
+nombre,descripcion,categoria,marca,sku,codigo_barras,talla,color,precio_menudeo,precio_mayoreo,stock_inicial
+Playera Básica,Playera de algodón 100%,Ropa,MarcaX,PLY-M-NEG,7501234567890,M,Negro,600.00,500.00,50
+Playera Básica,Playera de algodón 100%,Ropa,MarcaX,PLY-L-NEG,7501234567891,L,Negro,600.00,500.00,30
+Playera Básica,Playera de algodón 100%,Ropa,MarcaX,PLY-XL-NEG,7501234567892,XL,Negro,650.00,550.00,20
+Playera Básica,Playera de algodón 100%,Ropa,MarcaX,PLY-M-AZU,7501234567893,M,Azul,600.00,500.00,45
+Pantalón Mezclilla,Jeans corte recto,Ropa,MarcaY,PAN-30-AZU,7501234567894,30,Azul,800.00,700.00,25
+Pantalón Mezclilla,Jeans corte recto,Ropa,MarcaY,PAN-32-AZU,7501234567895,32,Azul,800.00,700.00,35
+Botas Trabajo,Botas industriales piel,Calzado,MarcaZ,BOT-26-NEG,7501234567896,26,Negro,1200.00,1000.00,15
+Botas Trabajo,Botas industriales piel,Calzado,MarcaZ,BOT-27-NEG,7501234567897,27,Negro,1200.00,1000.00,18
+Chamarra Invierno,Chamarra térmica,Ropa,MarcaX,CHA-M-VER,7501234567898,M,Verde,1500.00,1300.00,10
+Chamarra Invierno,Chamarra térmica,Ropa,MarcaX,CHA-L-VER,7501234567899,L,Verde,1500.00,1300.00,12

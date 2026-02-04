@@ -1,0 +1,185 @@
+/* ==================== CUSTOM BOOTSTRAP STYLES ==================== */
+
+/* Stat Cards con hover effect */
+.stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none !important;
+}
+
+.stat-card:hover {
+  transform: scale(1.05);
+  box-shadow: var(--erp-shadow-hover) !important;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  box-shadow: var(--erp-shadow-hover) !important;
+}
+
+/* Nav link active personalizado */
+.nav-link.active {
+  background-color: var(--bs-primary) !important;
+  color: white !important;
+}
+
+/* Animación fadeIn */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--erp-bg-soft);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--erp-secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--erp-primary);
+}
+
+/* Navbar con paleta ERP (theme.css aplica .navbar-erp) */
+.navbar.sticky-top {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Tables hover mejorado */
+.table-hover tbody tr {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--erp-highlight) !important;
+}
+
+/* Badges con iconos alineados */
+.badge {
+  font-weight: 600;
+  padding: 0.35em 0.65em;
+}
+
+/* Gaps para flex y grid (Tailwind-like) */
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 1rem; }
+.gap-4 { gap: 1.5rem; }
+.gap-5 { gap: 3rem; }
+
+/* Utilidades de opacidad */
+.opacity-75 { opacity: 0.75; }
+.opacity-90 { opacity: 0.9; }
+
+/* Sombras adicionales */
+.shadow-hover {
+  box-shadow: var(--erp-shadow-sm);
+}
+
+/* Spinner en botones */
+.btn .spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}
+
+/* Modal backdrop */
+.modal.d-block {
+  background-color: rgba(47, 65, 86, 0.5);
+}
+
+/* Responsive utilities adicionales */
+@media (max-width: 575.98px) {
+  .small {
+    font-size: 0.875rem;
+  }
+  
+  .h3-md {
+    font-size: 1.5rem;
+  }
+  
+  .small-md {
+    font-size: 0.875rem;
+  }
+  
+  .p-3 {
+    padding: 0.75rem !important;
+  }
+  
+  .gap-2 {
+    gap: 0.5rem !important;
+  }
+  
+  .stat-card:hover {
+    transform: none; /* Desactivar hover en mobile */
+  }
+}
+
+@media (min-width: 576px) {
+  .small-md {
+    font-size: 1rem;
+  }
+  
+  .h3-md {
+    font-size: 1.75rem;
+  }
+}
+
+/* Mejoras responsive para tablas */
+@media (max-width: 767.98px) {
+  .table-sm th,
+  .table-sm td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .table-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Asegurar que las cards tengan altura uniforme */
+.card.h-100 {
+  display: flex;
+  flex-direction: column;
+}
+
+.card.h-100 .card-body {
+  flex-grow: 1;
+}
+
+/* Mejorar gráficas en mobile */
+@media (max-width: 767.98px) {
+  .recharts-wrapper {
+    overflow: visible !important;
+  }
+  
+  .recharts-surface {
+    overflow: visible !important;
+  }
+}
+

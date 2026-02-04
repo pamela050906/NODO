@@ -1,0 +1,23 @@
+# Dockerfile para desarrollo
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copiar package files
+COPY package*.json ./
+
+# Limpiar cache y node_modules si existen
+RUN rm -rf node_modules package-lock.json && \
+    npm cache clean --force
+
+# Instalar dependencias (solo Bootstrap, sin Tailwind)
+RUN npm install
+
+# Copiar el resto de la aplicación
+COPY . .
+
+# Exponer puerto
+EXPOSE 3000
+
+# Comando para desarrollo
+CMD ["npm", "start"]
