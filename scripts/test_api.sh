@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Script de testing para el API del POS
-# Uso: ./test_api.sh
+# Uso desde la raíz del proyecto: ./scripts/test_api.sh
+# O desde scripts/: ./test_api.sh
 
 BASE_URL="http://localhost:8000"
 API_URL="$BASE_URL/api/v1"

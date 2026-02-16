@@ -2,7 +2,7 @@
 
 Frontend moderno desarrollado con React para el sistema de gestión empresarial (ERP) con módulos de POS, Almacén, Reportes, Facturación y Cobranza.
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Características](#características)
 - [Tecnologías](#tecnologías)
@@ -14,16 +14,16 @@ Frontend moderno desarrollado con React para el sistema de gestión empresarial 
 - [Módulos](#módulos)
 - [Atajos de Teclado](#atajos-de-teclado)
 
-## ✨ Características
+## Características
 
 ### Módulos Implementados
 
-- **🏠 Dashboard**: Vista general con estadísticas y resúmenes
-- **🛒 POS (Punto de Venta)**: Sistema de ventas con lector de códigos de barras
-- **📦 Almacén**: Gestión de productos, variantes y control de inventario
-- **📊 Reportes**: Reportes de ventas, almacén y movimientos con exportación
-- **🧾 Facturación**: Creación y timbrado de facturas SAT
-- **💰 Cobranza**: Gestión de cuentas por cobrar y pagos
+- **Dashboard**: Vista general con estadísticas y resúmenes
+- **POS (Punto de Venta)**: Sistema de ventas con lector de códigos de barras
+- **Almacén**: Gestión de productos, variantes y control de inventario
+- **Reportes**: Reportes de ventas, almacén y movimientos con exportación
+- **Facturación**: Creación y timbrado de facturas SAT
+- **Cobranza**: Gestión de cuentas por cobrar y pagos
 
 ### Características Generales
 
@@ -36,20 +36,20 @@ Frontend moderno desarrollado con React para el sistema de gestión empresarial 
 - ✅ Mensajes de feedback al usuario
 - ✅ Atajos de teclado para operaciones rápidas
 
-## 🛠️ Tecnologías
+## Tecnologías
 
 - **React** 19.2.3
 - **React Router DOM** 7.12.0
 - **Axios** 1.13.2
 - **CSS3** (con variables y gradientes)
 
-## 📦 Requisitos Previos
+## Requisitos Previos
 
 - Node.js >= 14.x
 - npm >= 6.x
 - Backend del ERP corriendo en `http://localhost:8000`
 
-## 🚀 Instalación
+## Instalación
 
 1. **Clonar el repositorio** (si aún no lo has hecho)
 
@@ -64,7 +64,7 @@ cd ERP/frontend
 npm install
 ```
 
-## ⚙️ Configuración
+## Configuración
 
 ### Variables de Entorno
 
@@ -82,7 +82,7 @@ El `package.json` ya incluye un proxy configurado para desarrollo:
 "proxy": "http://localhost:8000"
 ```
 
-## 🎯 Uso
+## Uso
 
 ### Desarrollo
 
@@ -112,7 +112,7 @@ Ejecutar tests:
 npm test
 ```
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 frontend/
@@ -148,7 +148,7 @@ frontend/
 └── README.md
 ```
 
-## 🎮 Módulos
+## Módulos
 
 ### 1. Login
 
@@ -200,10 +200,10 @@ frontend/
 - **Movimientos**: Historial de entradas/salidas
 
 **Operaciones**:
-- ➕ Crear producto
-- 🏷️ Crear variante (talla/color)
-- 📦 Registrar movimiento
-- 📄 Carga masiva CSV
+- Crear producto
+- Crear variante (talla/color)
+- Registrar movimiento
+- Carga masiva CSV
 
 ### 5. Reportes
 
@@ -245,7 +245,7 @@ frontend/
 - Estado de cuenta por cliente
 - Alertas de vencimiento
 
-## ⌨️ Atajos de Teclado
+## ⌨Atajos de Teclado
 
 ### POS (Punto de Venta)
 
@@ -256,7 +256,7 @@ frontend/
 | `F3` | Cancelar Venta |
 | `Enter` | Agregar Producto |
 
-## 🎨 Temas y Estilos
+## Temas y Estilos
 
 El frontend utiliza un sistema de diseño moderno con:
 
@@ -266,7 +266,7 @@ El frontend utiliza un sistema de diseño moderno con:
 - **Responsive**: Diseño adaptable a móviles y tablets
 - **Componentes**: Cards, badges, botones, modales consistentes
 
-## 🔒 Autenticación y Roles
+## Autenticación y Roles
 
 El sistema implementa control de acceso basado en roles (RBAC):
 
@@ -307,7 +307,7 @@ NODE_ENV=development
 REACT_APP_API_URL=http://localhost:8000
 ```
 
-## 📱 Responsive Design
+## Responsive Design
 
 El frontend está optimizado para:
 
@@ -315,7 +315,7 @@ El frontend está optimizado para:
 - **Tablet**: 768px - 1399px (adaptación de layouts)
 - **Mobile**: < 768px (columna única, navegación simplificada)
 
-## 🚀 Despliegue
+## Despliegue
 
 ### Build de Producción
 
@@ -356,7 +356,7 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
-## 📚 API Integration
+## API Integration
 
 El frontend se comunica con el backend a través de `apiService.js`:
 
@@ -366,7 +366,7 @@ import { authService, salesService, productService, ... } from './services/apiSe
 
 Todos los servicios están documentados en el archivo `apiService.js`
 
-## 🤝 Contribuciones
+## Contribuciones
 
 Para contribuir:
 
@@ -386,4 +386,3 @@ Para reportar bugs o solicitar features, crea un issue en el repositorio.
 
 ---
 
-**Desarrollado con ❤️ para optimizar la gestión empresarial**

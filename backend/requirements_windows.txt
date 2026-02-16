@@ -1,5 +1,7 @@
 # Requirements optimizado para Windows (wheels precompilados)
 # Usar este archivo si requirements.txt falla con errores de compilación
+# Ubicación: backend/requirements_windows.txt
+# Instalar con: pip install -r backend/requirements_windows.txt
 
 # Core Framework
 fastapi==0.109.0

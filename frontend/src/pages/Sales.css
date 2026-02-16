@@ -282,25 +282,6 @@
   border: 1px solid var(--erp-danger-border);
 }
 
-/* Scrollbar personalizado */
-.cart-items::-webkit-scrollbar {
-  width: 8px;
-}
-
-.cart-items::-webkit-scrollbar-track {
-  background: var(--erp-bg-soft);
-  border-radius: 10px;
-}
-
-.cart-items::-webkit-scrollbar-thumb {
-  background: var(--erp-secondary);
-  border-radius: 10px;
-}
-
-.cart-items::-webkit-scrollbar-thumb:hover {
-  background: var(--erp-primary);
-}
-
 /* Responsive */
 @media (max-width: 1024px) {
   .sales-grid {

@@ -60,6 +60,13 @@
 
   /* Hover del primario (oscurecimiento) */
   --erp-primary-hover: #3d5266;
+
+  /* Tipografía */
+  --erp-font: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Contraste: texto sobre fondos */
+  --erp-text-on-dark: #ffffff;
+  --erp-text-on-light: #2f4156;
 }
 
 /* Navbar: barra superior con color primario */
@@ -74,24 +81,88 @@
 
 .navbar.navbar-erp .navbar-brand,
 .navbar.navbar-erp .nav-link {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: var(--erp-text-on-dark) !important;
+  font-family: var(--erp-font);
+}
+.navbar.navbar-erp .nav-link {
+  opacity: 0.95;
+}
+.navbar.navbar-erp .nav-link.active,
+.navbar.navbar-erp .nav-link:hover,
+.navbar.navbar-erp .nav-link:focus {
+  opacity: 1;
 }
 
 .navbar.navbar-erp .nav-link:hover,
 .navbar.navbar-erp .nav-link:focus {
-  color: #fff !important;
   background-color: var(--erp-highlight) !important;
+  color: var(--erp-text-on-light) !important;
   border-radius: 6px;
 }
 
 .navbar.navbar-erp .nav-link.active {
   background-color: var(--erp-secondary) !important;
-  color: #fff !important;
+  color: var(--erp-text-on-dark) !important;
 }
 
 .navbar.navbar-erp .navbar-toggler {
   border-color: rgba(255, 255, 255, 0.5);
   color: rgba(255, 255, 255, 0.9);
+}
+
+/* Tipografía Montserrat en todo el sistema */
+button, input, select, textarea, .form-control, .btn,
+.table, .card, .card-title, .card-text, .modal-title, label,
+.alert, .badge, .nav-link, .navbar-brand {
+  font-family: var(--erp-font) !important;
+}
+
+/* Contraste: texto claro sobre fondos oscuros (cards, cabeceras tabla) */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-info,
+.card-header.bg-primary,
+.card-header.bg-success,
+.card-header.bg-info {
+  color: var(--erp-text-on-dark) !important;
+}
+.card.bg-primary .card-title,
+.card.bg-primary .card-subtitle,
+.card.bg-primary small,
+.card.bg-success .card-title,
+.card.bg-success .card-subtitle,
+.card.bg-success small,
+.card.bg-info .card-title,
+.card.bg-info .card-subtitle,
+.card.bg-info small,
+.card-header.bg-primary *,
+.card-header.bg-success *,
+.card-header.bg-info * {
+  color: var(--erp-text-on-dark) !important;
+}
+
+/* Fondo amarillo (warning): texto oscuro para legibilidad */
+.card.bg-warning,
+.card-header.bg-warning {
+  color: var(--erp-text-on-light) !important;
+}
+.card.bg-warning .card-title,
+.card.bg-warning .card-subtitle,
+.card.bg-warning small,
+.card-header.bg-warning * {
+  color: var(--erp-text-on-light) !important;
+}
+
+/* Botones: texto claro sobre fondo oscuro; warning con texto oscuro */
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-info {
+  color: var(--erp-text-on-dark) !important;
+}
+.btn-warning {
+  color: var(--erp-text-on-light) !important;
 }
 
 /* Botones primarios y secundarios con paleta */
@@ -115,14 +186,14 @@
 .btn-secondary:not(.bg-secondary) {
   background-color: var(--erp-secondary) !important;
   border-color: var(--erp-secondary) !important;
-  color: #fff !important;
+  color: var(--erp-text-on-dark) !important;
 }
 
 .btn-secondary:hover:not(:disabled),
 .btn-outline-primary:hover:not(:disabled) {
   background-color: var(--erp-highlight) !important;
   border-color: var(--erp-secondary) !important;
-  color: var(--erp-primary) !important;
+  color: var(--erp-text-on-light) !important;
 }
 
 /* Cards y paneles: fondo suave */
@@ -182,14 +253,4 @@ textarea:focus-visible {
 .card-footer {
   background-color: var(--erp-bg-soft) !important;
   border-top: 1px solid var(--erp-border) !important;
-}
-
-/* Scrollbar con paleta */
-::-webkit-scrollbar-thumb {
-  background: var(--erp-secondary);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--erp-primary);
 }

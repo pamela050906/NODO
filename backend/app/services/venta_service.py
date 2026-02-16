@@ -244,7 +244,7 @@ class VentaService:
         detalle = self.venta_repo.add_detalle(detalle)
         
         # NOTA: Los triggers de PostgreSQL actualizan inventario automáticamente
-        # al insertar venta_detalle (ver fn_descuento_inventario en almacen_db.sql)
+        # al insertar venta_detalle (ver fn_descuento_inventario en docs/almacen_db.sql)
         # Por lo tanto NO actualizamos el stock manualmente aquí
         
         return detalle

@@ -261,7 +261,7 @@ La especificación detallada de endpoints está en `openapi.yaml`. A continuaci�
 
 ### Uso de la base de datos como “motor de reglas”
 
-- Parte de la lógica se delega a **triggers y funciones en PostgreSQL** (por ejemplo, descuento de inventario en `almacen_db.sql`):
+- Parte de la lógica se delega a **triggers y funciones en PostgreSQL** (por ejemplo, descuento de inventario en `docs/almacen_db.sql`):
   - Al insertar un `venta_detalle`, un trigger puede:
     - Descontar stock automáticamente.
     - Registrar movimientos de inventario.
@@ -322,7 +322,7 @@ Con `docker-compose up` se levanta toda la pila (BD + API + frontend) para desar
 ## Referencias
 
 - Especificación completa de la API: `openapi.yaml`.
-- Script de estructura de BD: `almacen_db.sql`.
+- Script de estructura de BD: `docs/almacen_db.sql`.
 - Servicios de negocio principales:
   - `app/services/venta_service.py`
   - `app/services/inventario_service.py`

@@ -1,0 +1,224 @@
+%% Diagrama ER - Base de datos ERP (almacen_db)
+%% Incluye: docs/almacen_db.sql + migraciones 001-004 + facturacion_actualizada.sql
+%% Puedes visualizarlo en https://mermaid.live o en VS Code con extensión Mermaid
+
+erDiagram
+    roles ||--o{ usuarios : "tiene"
+    usuarios ||--o{ ventas : "registra"
+    puntos_venta ||--o{ ventas : "en"
+    ventas ||--o{ venta_detalle : "contiene"
+    variantes_producto ||--o{ venta_detalle : "en"
+    productos ||--o{ variantes_producto : "tiene"
+    variantes_producto ||--o| inventario : "stock"
+    variantes_producto ||--o{ movimientos_inventario : "registra"
+    ventas ||--o| tickets : "genera"
+    ventas ||--o{ factura_ventas : "vinculada"
+    facturas ||--o{ factura_ventas : "vinculada"
+    facturas ||--o{ factura_conceptos : "tiene"
+    factura_conceptos ||--o{ factura_concepto_impuestos : "impuestos"
+    facturas ||--o{ factura_pagos : "pagos"
+    folios_sat ||--o{ facturas : "folio"
+    configuracion_fiscal ||--o{ facturas : "emisor"
+    clientes ||--o{ ventas : "cliente"
+    ventas ||--o{ cuentas_por_cobrar : "cuenta"
+    clientes ||--o{ cuentas_por_cobrar : "debe"
+    cuentas_por_cobrar ||--o{ pagos_cuenta : "abonos"
+    usuarios ||--o{ pagos_cuenta : "registra"
+
+    roles {
+        int id PK
+        varchar nombre UK
+    }
+
+    usuarios {
+        int id PK
+        varchar nombre
+        varchar email UK
+        text password_hash
+        int rol_id FK
+        boolean activo
+        timestamp creado_en
+    }
+
+    puntos_venta {
+        int id PK
+        varchar codigo UK
+        text descripcion
+        boolean activo
+    }
+
+    productos {
+        int id PK
+        varchar nombre
+        text descripcion
+        varchar categoria
+        varchar marca
+        boolean activo
+        timestamp creado_en
+        timestamp actualizado_en
+    }
+
+    variantes_producto {
+        int id PK
+        int producto_id FK
+        varchar sku UK
+        varchar talla
+        varchar color
+        numeric precio_menudeo
+        numeric precio_mayoreo
+        varchar codigo_barras UK
+        boolean activo
+    }
+
+    inventario {
+        int id PK
+        int variante_id FK UK
+        int stock
+        timestamp actualizado_en
+    }
+
+    movimientos_inventario {
+        int id PK
+        int variante_id FK
+        varchar tipo
+        int cantidad
+        text referencia
+        timestamp creado_en
+    }
+
+    ventas {
+        int id PK
+        int punto_venta_id FK
+        int usuario_id FK
+        int cliente_id FK
+        numeric total
+        numeric subtotal
+        numeric descuento
+        numeric impuesto
+        varchar metodo_pago
+        varchar tipo_venta
+        varchar estado
+        timestamp creada_en
+        timestamp completed_at
+    }
+
+    venta_detalle {
+        int id PK
+        int venta_id FK
+        int variante_id FK
+        int cantidad
+        numeric precio_unitario
+        numeric subtotal
+    }
+
+    tickets {
+        int id PK
+        int venta_id FK
+        text contenido
+        timestamp creado_en
+    }
+
+    facturas {
+        int id PK
+        varchar uuid_sat
+        varchar serie
+        int folio
+        timestamp fecha
+        numeric total
+        varchar rfc_emisor
+        varchar rfc_receptor
+        varchar estado
+        varchar uso_cfdi
+        varchar forma_pago
+        varchar metodo_pago
+        text xml_content
+        varchar xml_url
+        varchar pdf_url
+        timestamp creada_en
+    }
+
+    factura_ventas {
+        int factura_id PK_FK
+        int venta_id PK_FK
+    }
+
+    folios_sat {
+        int id PK
+        varchar serie
+        int folio_actual
+        boolean activo
+    }
+
+    configuracion_fiscal {
+        int id PK
+        varchar rfc_emisor UK
+        varchar nombre_emisor
+        varchar razon_social
+        varchar regimen_fiscal
+        varchar codigo_postal
+        boolean activo
+        timestamp creado_en
+    }
+
+    factura_conceptos {
+        int id PK
+        int factura_id FK
+        varchar clave_prod_serv
+        numeric cantidad
+        varchar clave_unidad
+        text descripcion
+        numeric precio_unitario
+        numeric importe
+        int numero_linea
+    }
+
+    factura_concepto_impuestos {
+        int id PK
+        int concepto_id FK
+        varchar tipo_movimiento
+        varchar impuesto
+        numeric base
+        numeric importe
+    }
+
+    factura_pagos {
+        int id PK
+        int factura_id FK
+        timestamp fecha_pago
+        varchar forma_pago
+        numeric monto
+    }
+
+    clientes {
+        int id PK
+        varchar nombre
+        varchar rfc
+        varchar telefono
+        varchar email
+        text direccion
+        numeric limite_credito
+        boolean activo
+        timestamp creado_en
+    }
+
+    cuentas_por_cobrar {
+        int id PK
+        int venta_id FK
+        int cliente_id FK
+        numeric monto_total
+        numeric monto_pagado
+        numeric saldo_pendiente
+        date fecha_vencimiento
+        varchar estado
+        timestamp creada_en
+    }
+
+    pagos_cuenta {
+        int id PK
+        int cuenta_id FK
+        numeric monto
+        varchar metodo_pago
+        varchar referencia
+        int usuario_id FK
+        timestamp creado_en
+    }

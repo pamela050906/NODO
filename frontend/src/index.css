@@ -14,13 +14,11 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--erp-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--erp-bg-soft);
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -42,10 +40,11 @@ code {
 
 /* ==================== TYPOGRAPHY ==================== */
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--erp-font);
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5rem;
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
 }
 
 p {

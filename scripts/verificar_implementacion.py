@@ -76,7 +76,8 @@ def verificar_archivos():
         'examples/productos_carga_masiva.csv',
     ]
     
-    base_path = Path(__file__).parent
+    # Ajustar ruta base: el script está en scripts/, pero los archivos están en la raíz
+    base_path = Path(__file__).resolve().parent.parent
     archivos_faltantes = []
     archivos_encontrados = 0
     
@@ -116,7 +117,8 @@ def verificar_estructura():
         'documentacion'
     ]
     
-    base_path = Path(__file__).parent
+    # Ajustar ruta base: el script está en scripts/, pero los directorios están en la raíz
+    base_path = Path(__file__).resolve().parent.parent
     print("\n🔍 Verificando estructura de directorios...\n")
     
     todos_ok = True

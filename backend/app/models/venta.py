@@ -17,14 +17,14 @@ class Venta(Base):
     Modelo de Venta (cabecera).
     Representa una transacción de venta completa.
     
-    ALINEADO con almacen_db.sql + migración 001
+    ALINEADO con docs/almacen_db.sql + migración 001
     """
     
     __tablename__ = "ventas"
     
     id = Column(Integer, primary_key=True, index=True)
     
-    # Punto de venta (ALINEADO: almacen_db.sql tiene punto_venta_id)
+    # Punto de venta (ALINEADO: docs/almacen_db.sql tiene punto_venta_id)
     punto_venta_id = Column(Integer, ForeignKey("puntos_venta.id"), nullable=False)
     
     # Usuario que registra la venta
@@ -40,7 +40,7 @@ class Venta(Base):
     estado = Column(String(20), default='ABIERTA')  # ABIERTA, CERRADA, CANCELADA
     metodo_pago = Column(String(20), nullable=False)  # EFECTIVO, TARJETA
     
-    # Auditoría (ALINEADO: almacen_db.sql usa creada_en)
+    # Auditoría (ALINEADO: docs/almacen_db.sql usa creada_en)
     creada_en = Column(DateTime(timezone=True), server_default=func.now(), index=True)
     completed_at = Column(DateTime(timezone=True))
     
@@ -59,7 +59,7 @@ class VentaDetalle(Base):
     Modelo de Detalle de Venta.
     Cada línea de producto en una venta.
     
-    ALINEADO con almacen_db.sql
+    ALINEADO con docs/almacen_db.sql
     """
     
     __tablename__ = "venta_detalle"
@@ -68,7 +68,7 @@ class VentaDetalle(Base):
     venta_id = Column(Integer, ForeignKey("ventas.id"), nullable=False, index=True)
     variante_id = Column(Integer, ForeignKey("variantes_producto.id"), nullable=False)
     
-    # Cantidades y precios (ALINEADO: almacen_db.sql NO tiene descuento en detalle)
+    # Cantidades y precios (ALINEADO: docs/almacen_db.sql NO tiene descuento en detalle)
     cantidad = Column(Integer, nullable=False)
     precio_unitario = Column(Numeric(10, 2), nullable=False)
     subtotal = Column(Numeric(12, 2), nullable=False)

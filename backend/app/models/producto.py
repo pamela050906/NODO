@@ -27,7 +27,7 @@ class VarianteProducto(Base):
     Modelo de Variante de Producto.
     Cada variante tiene código de barras único y precios diferenciados.
     
-    ALINEADO con almacen_db.sql
+    ALINEADO con docs/almacen_db.sql
     """
     
     __tablename__ = "variantes_producto"

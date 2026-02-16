@@ -2,7 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
+from app.core.logging_config import setup_logging, get_logger
 from app.api.v1 import auth, ventas, pos, productos, inventario, reportes, cobranza, facturas, configuracion
+
+# Configurar logging
+setup_logging(
+    log_level=settings.LOG_LEVEL,
+    log_dir=settings.LOG_DIR
+)
+logger = get_logger(__name__)
 
 # Crear aplicación FastAPI
 app = FastAPI(
@@ -27,14 +35,18 @@ app = FastAPI(
     * Clean Architecture (Repositories → Services → API)
     * SQLAlchemy 2.0 con PostgreSQL
     * Manejo profesional de errores
-    * Alineado con almacen_db.sql
+    * Alineado con docs/almacen_db.sql
     """
 )
 
 # Configurar CORS
+cors_origins = settings.CORS_ORIGINS.split(",") if "," in settings.CORS_ORIGINS else [settings.CORS_ORIGINS]
+if "*" in cors_origins and not settings.DEBUG:
+    logger.warning("⚠️  CORS configurado con '*' en producción. Esto es inseguro!")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción, especificar orígenes permitidos
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,8 +77,33 @@ def root():
 
 @app.get("/health")
 def health_check():
-    """Health check endpoint."""
-    return {"status": "healthy"}
+    """
+    Health check endpoint.
+    
+    Verifica que la aplicación está funcionando correctamente.
+    """
+    from datetime import datetime
+    from app.core.database import engine
+    from sqlalchemy import text
+    
+    try:
+        # Verificar conexión a base de datos
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "timestamp": datetime.now().isoformat(),
+            "version": "1.0.0"
+        }
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=503,
+            detail=f"Unhealthy: Database connection failed - {str(e)}"
+        )
 
 
 if __name__ == "__main__":

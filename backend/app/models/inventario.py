@@ -10,7 +10,7 @@ class Inventario(Base):
     Mantiene el stock de cada variante de producto.
     IMPORTANTE: Los triggers de PostgreSQL manejan la lógica de actualización.
     
-    ALINEADO con almacen_db.sql
+    ALINEADO con docs/almacen_db.sql
     """
     
     __tablename__ = "inventario"
@@ -24,7 +24,7 @@ class Inventario(Base):
         index=True
     )
     
-    # Stock actual (ALINEADO: almacen_db.sql usa 'stock' no 'cantidad')
+    # Stock actual (ALINEADO: docs/almacen_db.sql usa 'stock' no 'cantidad')
     stock = Column(Integer, nullable=False, default=0)
     
     # Timestamp de última actualización

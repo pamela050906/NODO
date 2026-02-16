@@ -23,9 +23,17 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "POS Backend API"
     DEBUG: bool = True
     
+    # Logging
+    LOG_LEVEL: str = "INFO"
+    LOG_DIR: str = "logs"
+    
+    # CORS
+    CORS_ORIGINS: str = "*"  # En producción, especificar orígenes separados por coma
+    
     class Config:
-        env_file = ".env"
+        env_file = "backend/.env"
         case_sensitive = True
+        extra = "ignore"  # Ignorar variables extra en .env que no están definidas
 
 
 settings = Settings()

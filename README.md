@@ -42,21 +42,30 @@ Sistema integral de ERP y Punto de Venta construido a medida según especificaci
 ## ⚡ Inicio Rápido (5 minutos)
 
 ```bash
-# 1. Aplicar migraciones
+# 1. Clonar el repositorio
+git clone <url-del-repositorio>
+cd ERP
+
+# 2. Crear archivo .env (ver docs/INSTALLATION.md)
+cp .env.example .env  # Si existe, o crear manualmente
+
+# 3. Aplicar migraciones
 psql -U postgres -d almacen_db -f migrations/001_add_venta_fields.sql
 psql -U postgres -d almacen_db -f migrations/002_mejora_precios_acumulado.sql
 psql -U postgres -d almacen_db -f migrations/003_modulo_cobranza.sql
 
-# 2. Iniciar servicios
+# 4. Iniciar servicios
 docker-compose up -d
 
-# 3. Acceder
+# 5. Acceder
 # Backend: http://localhost:8000/docs
 # Frontend: http://localhost:3000
 # Usuario: admin / Password: admin123
 ```
 
-📖 **Guía detallada**: Ver [INICIO_RAPIDO.md](INICIO_RAPIDO.md)
+**⚠️ Nota**: Si encuentras errores al clonar, consulta [docs/TROUBLESHOOTING.md#clonación-desde-git](docs/TROUBLESHOOTING.md#clonación-desde-git)
+
+📖 **Guía detallada**: Ver [docs/INSTALLATION.md](docs/INSTALLATION.md)
 
 ---
 
@@ -99,7 +108,7 @@ Sistema ERP YOMYOM/
 
 ### Instalación Completa
 
-**Ver guía paso a paso**: [INICIO_RAPIDO.md](INICIO_RAPIDO.md)
+**Ver guía paso a paso**: [docs/INSTALLATION.md](docs/INSTALLATION.md)
 
 ### Inicio Rápido con Docker
 
@@ -177,7 +186,7 @@ uvicorn backend.app.main:app --reload
 4. ✅ `fn_recalcular_totales_venta()` - Actualiza totales automáticamente
 5. ✅ `fn_actualizar_cuenta_pago()` - Actualiza saldo al abonar
 
-**Archivo base**: `almacen_db.sql`  
+**Archivo base**: `docs/almacen_db.sql`  
 **Migraciones**: Ver carpeta `migrations/`
 
 ### Script de Inicialización (Opcional)
@@ -282,7 +291,7 @@ curl -X GET "http://localhost:8000/api/v1/auth/me" \
 - `POST /api/v1/facturas/global/tarjetas` - Factura global
 - `POST /api/v1/facturas/{id}/cancelar` - Cancelar factura
 
-**Total: 50+ endpoints** | Ver lista completa en [RUTAS_ALINEADAS.md](RUTAS_ALINEADAS.md)
+**Total: 50+ endpoints** | Ver documentación completa en [docs/API.md](docs/API.md) y `http://localhost:8000/docs`
 
 ## ⭐ Características Destacadas
 
@@ -533,28 +542,31 @@ inventario.cantidad -= cantidad  # Descomentar si no hay triggers
 4. Configurar rate limiting
 5. Implementar logging robusto
 
-## 🎓 Capacitación
+## 🎓 Roles y Permisos
 
-Ver **[IMPLEMENTACION_COMPLETA.md](IMPLEMENTACION_COMPLETA.md)** sección "Capacitación Requerida"
+El sistema implementa control de acceso basado en roles (RBAC):
 
 ### Roles del Sistema
 
 **ADMIN**: Acceso completo
-- Todos los módulos
-- Configuración del sistema
-- Gestión de usuarios
+- ✅ Todos los módulos
+- ✅ Configuración del sistema
+- ✅ Gestión de usuarios
+- ✅ Reportes completos
 
 **CAJERO**: Operaciones de venta
-- POS (ventas)
-- Cobranza (pagos)
-- Reportes (consulta)
-- Facturación
+- ✅ POS (ventas)
+- ✅ Cobranza (pagos)
+- ✅ Reportes (consulta)
+- ✅ Facturación
 
 **ALMACEN**: Gestión de inventario
-- Productos y variantes
-- Movimientos de stock
-- Reportes de almacén
-- Carga masiva
+- ✅ Productos y variantes
+- ✅ Movimientos de stock
+- ✅ Reportes de almacén
+- ✅ Carga masiva
+
+Para más detalles sobre seguridad y autenticación, ver [docs/SECURITY.md](docs/SECURITY.md)
 
 ---
 
@@ -562,7 +574,7 @@ Ver **[IMPLEMENTACION_COMPLETA.md](IMPLEMENTACION_COMPLETA.md)** sección "Capac
 
 ```bash
 # Ejecutar script de verificación
-python verificar_implementacion.py
+python scripts/verificar_implementacion.py
 ```
 
 Verifica que todos los archivos y módulos estén en su lugar.
@@ -571,16 +583,20 @@ Verifica que todos los archivos y módulos estén en su lugar.
 
 ## 🚀 Despliegue a Producción
 
-Ver **[IMPLEMENTACION_COMPLETA.md](IMPLEMENTACION_COMPLETA.md)** sección "Checklist Pre-Producción"
+**Checklist Pre-Producción**:
 
-**Pasos clave**:
-1. ✅ Aplicar migraciones
-2. ⚠️ Configurar SECRET_KEY segura
-3. ⚠️ Configurar CORS específicos
-4. ⚠️ Integrar PAC real (Finkok/Diverza)
-5. ⚠️ Certificados SAT
-6. ✅ Build frontend para producción
-7. ✅ Configurar HTTPS
+1. ✅ Aplicar todas las migraciones de base de datos
+2. ⚠️ Configurar `SECRET_KEY` segura en variables de entorno
+3. ⚠️ Configurar CORS con orígenes específicos (no `*`)
+4. ⚠️ Integrar PAC real para facturación SAT (Finkok/Diverza)
+5. ⚠️ Configurar certificados SAT y credenciales
+6. ✅ Build del frontend para producción (`npm run build`)
+7. ✅ Configurar HTTPS/SSL
+8. ⚠️ Configurar `DEBUG=False` en producción
+9. ⚠️ Configurar logging robusto
+10. ⚠️ Configurar backups automáticos de base de datos
+
+Para más detalles, consultar [docs/INSTALLATION.md](docs/INSTALLATION.md) y [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 
 ## 📁 Estructura del Proyecto
 
@@ -603,18 +619,24 @@ ERP/
 │   │   └── context/      # Context API (Auth)
 │   └── public/
 │
-├── documentacion/        # Documentación del proyecto
-│   ├── API_CONTRACT.md
-│   ├── ARCHITECTURE.md
-│   ├── COMANDOS_RAPIDOS.md
-│   ├── DEVELOPMENT.md
-│   └── FRONTEND_README.md
+├── docs/                 # Documentación completa del proyecto
+│   ├── INSTALLATION.md   # Guía de instalación
+│   ├── DEVELOPMENT.md    # Guía de desarrollo
+│   ├── ARCHITECTURE.md   # Arquitectura del sistema
+│   ├── API.md            # Documentación de API
+│   ├── DATABASE.md       # Base de datos
+│   ├── SECURITY.md       # Seguridad y autenticación
+│   ├── TROUBLESHOOTING.md # Solución de problemas
+│   ├── QUICK_REFERENCE.md # Referencia rápida
+│   └── MIGRATIONS.md     # Migraciones de BD
 │
 ├── scripts/              # Scripts de utilidad
 │   ├── inicio.ps1
 │   ├── start-all.ps1
 │   ├── start-frontend.ps1
-│   └── verificar-sistema.ps1
+│   ├── verificar-sistema.ps1
+│   ├── test_api.sh
+│   └── instalar_dependencias_windows.ps1
 │
 ├── examples/             # Ejemplos de uso
 ├── docker-compose.yml    # Orquestación de servicios
@@ -626,27 +648,27 @@ ERP/
 
 ## 📚 Documentación Completa
 
-### 📖 Guías de Inicio
-- **[INICIO_RAPIDO.md](INICIO_RAPIDO.md)** ⭐ - Configuración en 5 minutos
-- **[IMPLEMENTACION_COMPLETA.md](IMPLEMENTACION_COMPLETA.md)** - Resumen ejecutivo completo
-- **[AUDIT_GAP_MATRIX.md](AUDIT_GAP_MATRIX.md)** - Matriz de auditoría
+Toda la documentación está organizada profesionalmente en la carpeta `docs/`:
+
+### 🚀 Guías Principales
+- **[docs/INSTALLATION.md](docs/INSTALLATION.md)** ⭐ - Instalación completa paso a paso
+- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Guía de desarrollo y contribución
+- **[docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)** - Comandos rápidos y referencias
 
 ### 🔧 Documentación Técnica
-- **[ALINEACION_COMPLETADA.md](ALINEACION_COMPLETADA.md)** - Alineación BD↔Backend
-- **[RUTAS_ALINEADAS.md](RUTAS_ALINEADAS.md)** - Contrato API completo
-- **[documentacion/ARCHITECTURE.md](documentacion/ARCHITECTURE.md)** - Arquitectura detallada
-- **[documentacion/API_CONTRACT.md](documentacion/API_CONTRACT.md)** - Contrato original
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Arquitectura del sistema (Clean Architecture)
+- **[docs/API.md](docs/API.md)** - Documentación completa de la API REST
+- **[docs/DATABASE.md](docs/DATABASE.md)** - Estructura y gestión de base de datos
+- **[docs/SECURITY.md](docs/SECURITY.md)** - Seguridad, autenticación JWT y roles
 
-### 📦 Por Módulo
-- **[POS_COMPLETO.md](POS_COMPLETO.md)** - Portal de ventas con RF y QR
-- **[MODULO_ALMACEN.md](MODULO_ALMACEN.md)** - Control de stock y variantes
-- **[MODULO_REPORTES.md](MODULO_REPORTES.md)** - Sistema de reportes
-- **[MODULO_COBRANZA.md](MODULO_COBRANZA.md)** - Ventas a crédito
-- **[MODULO_FACTURACION.md](MODULO_FACTURACION.md)** - Facturación SAT
-- **[FRONTEND_COMPLETO.md](FRONTEND_COMPLETO.md)** - Frontend React
+### 🛠️ Operaciones y Mantenimiento
+- **[docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** - Solución de problemas comunes
+- **[docs/MIGRATIONS.md](docs/MIGRATIONS.md)** - Guía de migraciones de base de datos
+- **[docs/DIAGRAMA_BASE_DE_DATOS.md](docs/DIAGRAMA_BASE_DE_DATOS.md)** - Diagramas y visualización
 
-### 🗃️ Migraciones
-- **[migrations/APPLY_MIGRATIONS.md](migrations/APPLY_MIGRATIONS.md)** - Cómo aplicar migraciones
+### 📖 Documentación Adicional
+- **[frontend/README.md](frontend/README.md)** - Documentación específica del frontend
+- **[planeacion/ResumenEjecutivoERP.md](planeacion/ResumenEjecutivoERP.md)** - Resumen ejecutivo del proyecto
 
 ## 🚀 Scripts de Inicio Rápido
 
@@ -666,7 +688,8 @@ Proyecto privado - Todos los derechos reservados
 ## 📧 Soporte
 
 Para dudas o problemas, revisar:
-- Documentación interactiva en `/docs`
-- Documentación en carpeta `documentacion/`
-- Logs de la aplicación
-- Código fuente con comentarios detallados
+- **Documentación interactiva**: `http://localhost:8000/docs` (Swagger UI)
+- **Documentación completa**: Carpeta `docs/` con guías profesionales
+- **Solución de problemas**: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
+- **Referencia rápida**: [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)
+- **Logs de la aplicación**: `docker-compose logs -f` o logs del servidor

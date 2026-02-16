@@ -96,10 +96,10 @@ SELECT * FROM v_productos_stock;
 
 ```bash
 # Dar permisos al script (Linux/Mac)
-chmod +x test_api.sh
+chmod +x scripts/test_api.sh
 
-# Ejecutar tests
-./test_api.sh
+# Ejecutar tests desde la raíz del proyecto
+./scripts/test_api.sh
 ```
 
 ### 2. Test con Cliente Python
@@ -183,7 +183,7 @@ ERP/
 ├── Dockerfile                  # Imagen Docker
 ├── docker-compose.yml          # Orquestación
 ├── init_db.sql                 # Script de inicialización
-├── test_api.sh                 # Tests automáticos
+├── scripts/test_api.sh          # Tests automáticos
 ├── .env.example                # Template de variables
 ├── .gitignore
 ├── README.md                   # Documentación principal

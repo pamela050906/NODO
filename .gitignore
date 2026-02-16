@@ -66,8 +66,7 @@ frontend/.env.development.local
 frontend/.env.test.local
 frontend/.env.production.local
 
-# Scripts temporales
-reorganizar.bat
+# Scripts temporales (ya eliminados después de ejecución)
 
 # Cursor IDE
 .cursor/
@@ -84,3 +83,10 @@ lerna-debug.log*
 *.sql.backup
 backup*.sql
 *.bak
+backups/
+*.sql.gz
+*.sql.zip
+
+# Logs
+logs/
+*.log

@@ -6,13 +6,11 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--erp-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--erp-bg-soft);
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
   line-height: 1.6;
 }
 
@@ -22,15 +20,17 @@ code {
 
 /* ==================== TIPOGRAFÍA ==================== */
 .page-title {
+  font-family: var(--erp-font);
   font-size: 2rem;
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
   margin-bottom: 2rem;
   font-weight: 700;
 }
 
 .section-title {
+  font-family: var(--erp-font);
   font-size: 1.5rem;
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -104,10 +104,11 @@ code {
 }
 
 .form-group label {
+  font-family: var(--erp-font);
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
   font-size: 0.95rem;
 }
 
@@ -268,7 +269,8 @@ textarea.form-control {
 
 .table thead {
   background: var(--erp-primary);
-  color: white;
+  color: var(--erp-text-on-dark);
+  font-family: var(--erp-font);
 }
 
 .table th,
@@ -276,6 +278,7 @@ textarea.form-control {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--erp-border);
+  font-family: var(--erp-font);
 }
 
 .table th {
@@ -436,8 +439,9 @@ textarea.form-control {
 
 .modal-content h3 {
   margin-bottom: 1.5rem;
-  color: var(--erp-primary);
+  color: var(--erp-text-on-light);
   font-size: 1.5rem;
+  font-family: var(--erp-font);
 }
 
 .modal-actions {
