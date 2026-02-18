@@ -10,7 +10,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
+-- SET transaction_timeout = 0;  -- Comentado: parámetro no existe en PostgreSQL 15
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -855,9 +855,10 @@ COPY public.tickets (id, venta_id, contenido, creado_en) FROM stdin;
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
--- Usuarios: crear con scripts/crear_usuario.py --crear-defaults (Admin/admin123, Cajero/cajero123)
-COPY public.usuarios (id, nombre, email, password_hash, rol_id, activo, creado_en) FROM stdin;
-\.
+-- Usuarios por defecto: Admin/admin123, Cajero/cajero123
+INSERT INTO public.usuarios (id, nombre, email, password_hash, rol_id, activo, creado_en) VALUES
+(1, 'Admin', 'admin@local.com', '$2b$12$Jj8mMruVJxDrSNvgENaqku1VzzVWklaVvzWAVcXxw.QaqBTAHFp2a', 1, true, NOW()),
+(2, 'Cajero', 'cajero@local.com', '$2b$12$jI0nXKXYaGJaSuo2nj8Zi.ArX/3Uaj1HevktS/oJSWkmKkxADho8i', 2, true, NOW());
 
 
 --
@@ -969,7 +970,7 @@ SELECT pg_catalog.setval('public.tickets_id_seq', 1, false);
 -- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuarios_id_seq', 1, true);
+SELECT pg_catalog.setval('public.usuarios_id_seq', 2, true);
 
 
 --
