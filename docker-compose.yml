@@ -10,8 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Si tienes scripts SQL iniciales, descomenta:
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Script de inicialización: esquema + roles + datos base (sin usuarios; crearlos con scripts/crear_usuario.py --crear-defaults)
+      - ./docs/almacen_db.sql:/docker-entrypoint-initdb.d/01_schema.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -40,11 +40,16 @@ services:
     ports:
       - "3000:3000"
     environment:
+      # IMPORTANTE: Desde el navegador del host, localhost:8000 apunta al backend
+      # Si el frontend necesita conectarse desde dentro del contenedor, usaría 'http://backend:8000'
+      # Pero como las peticiones se hacen desde el navegador, localhost:8000 es correcto
       - REACT_APP_API_URL=http://localhost:8000
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
+      # Montar .env para que React lo lea (se crea dinámicamente por docker-entrypoint.sh)
+      - ./frontend/.env:/app/.env
     depends_on:
       - backend
     stdin_open: true

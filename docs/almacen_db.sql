@@ -1,8 +1,6 @@
 --
--- PostgreSQL database dump
+-- PostgreSQL database dump (sin \restrict para uso como init en Docker)
 --
-
-\restrict QvEbtf4DcpmpSI3jhQstdgMWNcXQjiKEMSBtAPFuTZobQrk4YKOprK6qeYMLCFA
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -803,8 +801,6 @@ COPY public.inventario (id, variante_id, stock, actualizado_en) FROM stdin;
 --
 
 COPY public.movimientos_inventario (id, variante_id, tipo, cantidad, referencia, creado_en) FROM stdin;
-1	1	SALIDA	5	Venta ID 3	2026-01-13 23:26:21.088087
-2	1	SALIDA	12	Venta ID 3	2026-01-13 23:26:55.694197
 \.
 
 
@@ -859,8 +855,8 @@ COPY public.tickets (id, venta_id, contenido, creado_en) FROM stdin;
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+-- Usuarios: crear con scripts/crear_usuario.py --crear-defaults (Admin/admin123, Cajero/cajero123)
 COPY public.usuarios (id, nombre, email, password_hash, rol_id, activo, creado_en) FROM stdin;
-1	Admin	admin@local.com	hash	1	t	2026-01-13 23:14:44.883577
 \.
 
 
@@ -882,8 +878,6 @@ COPY public.variantes_producto (id, producto_id, sku, talla, color, precio_menud
 --
 
 COPY public.venta_detalle (id, venta_id, variante_id, cantidad, precio_unitario, subtotal) FROM stdin;
-4	3	1	5	600.00	3000.00
-5	3	1	12	500.00	6000.00
 \.
 
 
@@ -894,8 +888,6 @@ COPY public.venta_detalle (id, venta_id, variante_id, cantidad, precio_unitario,
 --
 
 COPY public.ventas (id, punto_venta_id, usuario_id, total, metodo_pago, creada_en) FROM stdin;
-2	1	1	0.00	EFECTIVO	2026-01-13 23:14:57.862652
-3	1	1	0.00	EFECTIVO	2026-01-13 23:26:08.738877
 \.
 
 
@@ -932,7 +924,7 @@ SELECT pg_catalog.setval('public.inventario_id_seq', 1, true);
 -- Name: movimientos_inventario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.movimientos_inventario_id_seq', 3, true);
+SELECT pg_catalog.setval('public.movimientos_inventario_id_seq', 1, false);
 
 
 --
@@ -995,7 +987,7 @@ SELECT pg_catalog.setval('public.variantes_producto_id_seq', 1, true);
 -- Name: venta_detalle_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.venta_detalle_id_seq', 7, true);
+SELECT pg_catalog.setval('public.venta_detalle_id_seq', 1, false);
 
 
 --
@@ -1004,7 +996,7 @@ SELECT pg_catalog.setval('public.venta_detalle_id_seq', 7, true);
 -- Name: ventas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.ventas_id_seq', 3, true);
+SELECT pg_catalog.setval('public.ventas_id_seq', 1, false);
 
 
 --
@@ -1314,6 +1306,4 @@ ALTER TABLE ONLY public.ventas
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict QvEbtf4DcpmpSI3jhQstdgMWNcXQjiKEMSBtAPFuTZobQrk4YKOprK6qeYMLCFA
 
