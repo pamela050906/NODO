@@ -14,7 +14,7 @@ try {
 
 # 2. Levantar servicios con Docker
 Write-Host "`n2. Levantando servicios (Backend + DB)..." -ForegroundColor Yellow
-docker-compose up -d backend db
+docker compose -f docker/docker-compose.yml up -d backend db
 
 # Esperar a que los servicios estén listos
 Write-Host "   Esperando a que los servicios estén listos..." -ForegroundColor Yellow
@@ -22,7 +22,7 @@ Start-Sleep -Seconds 10
 
 # 3. Verificar servicios
 Write-Host "`n3. Verificando servicios..." -ForegroundColor Yellow
-docker-compose ps
+docker compose -f docker/docker-compose.yml ps
 
 # 4. Health check del backend
 Write-Host "`n4. Verificando backend..." -ForegroundColor Yellow
@@ -48,15 +48,15 @@ if (-not $backendReady) {
 
 # 5. Inicializar base de datos (si es necesario)
 Write-Host "`n5. Verificando base de datos..." -ForegroundColor Yellow
-$dbCheck = docker-compose exec -T db psql -U postgres -d pos_db -c "SELECT 1;" 2>&1
+$dbCheck = docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -d pos_db -c "SELECT 1;" 2>&1
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "   Creando base de datos..." -ForegroundColor Yellow
-    docker-compose exec -T db psql -U postgres -c "CREATE DATABASE pos_db;"
+    docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -c "CREATE DATABASE pos_db;"
     
     Write-Host "   Inicializando datos..." -ForegroundColor Yellow
-    docker cp init_db.sql pos_db:/tmp/init_db.sql
-    docker-compose exec -T db psql -U postgres -d pos_db -f /tmp/init_db.sql
+    docker cp docs/almacen_db.sql pos_db:/tmp/almacen_db.sql
+    docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -d pos_db -f /tmp/almacen_db.sql
 } else {
     Write-Host "   ✅ Base de datos lista" -ForegroundColor Green
 }
@@ -90,11 +90,11 @@ Write-Host "`n🚀 Opciones para iniciar el frontend:" -ForegroundColor Yellow
 Write-Host "   Opción 1 (Desarrollo local - Recomendado):" -ForegroundColor Yellow
 Write-Host "     .\start-frontend.ps1" -ForegroundColor White
 Write-Host "`n   Opción 2 (Docker - Todo junto):" -ForegroundColor Yellow
-Write-Host "     docker-compose up -d frontend" -ForegroundColor White
+Write-Host "     docker compose -f docker/docker-compose.yml up -d frontend" -ForegroundColor White
 
 Write-Host "`n💡 Comandos útiles:" -ForegroundColor Cyan
-Write-Host "   Ver logs:        docker-compose logs -f backend" -ForegroundColor White
-Write-Host "   Detener todo:    docker-compose down" -ForegroundColor White
-Write-Host "   Reiniciar:       docker-compose restart" -ForegroundColor White
+Write-Host "   Ver logs:        docker compose -f docker/docker-compose.yml logs -f backend" -ForegroundColor White
+Write-Host "   Detener todo:    docker compose -f docker/docker-compose.yml down" -ForegroundColor White
+Write-Host "   Reiniciar:       docker compose -f docker/docker-compose.yml restart" -ForegroundColor White
 
 Write-Host "`n🎉 ¡Listo para usar!" -ForegroundColor Green

@@ -132,7 +132,7 @@ def main():
                     print(f"   {line.strip()}")
     else:
         print("   ⚠ No se encontró archivo .env en frontend/")
-        print("   Verifica que REACT_APP_API_URL esté configurado en docker-compose.yml")
+        print("   Verifica que REACT_APP_API_URL esté configurado en docker/docker-compose.yml")
     
     print("\n" + "=" * 60)
     print("DIAGNÓSTICO COMPLETADO")

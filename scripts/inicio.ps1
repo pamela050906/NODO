@@ -6,7 +6,7 @@ Write-Host ""
 
 # 1. Levantar servicios
 Write-Host "1. Levantando servicios Docker..." -ForegroundColor Yellow
-docker-compose up -d
+docker compose -f docker/docker-compose.yml up -d
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "   ❌ Error al levantar servicios Docker" -ForegroundColor Red
@@ -20,25 +20,25 @@ Start-Sleep -Seconds 8
 
 # 2. Verificar servicios
 Write-Host "`n2. Verificando servicios..." -ForegroundColor Yellow
-docker-compose ps
+docker compose -f docker/docker-compose.yml ps
 
 # 3. Verificar si la DB necesita inicialización
 Write-Host "`n3. Verificando base de datos..." -ForegroundColor Yellow
 
 # Intentar conectar a la base de datos
-$dbCheck = docker-compose exec -T db psql -U postgres -d pos_db -c "SELECT 1;" 2>&1
+$dbCheck = docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -d pos_db -c "SELECT 1;" 2>&1
 
 if ($LASTEXITCODE -ne 0 -or $dbCheck -match "does not exist" -or $dbCheck -match "could not connect") {
     Write-Host "   Base de datos no existe o no está lista, creándola..." -ForegroundColor Yellow
     
     # Crear base de datos si no existe
-    docker-compose exec -T db psql -U postgres -c "CREATE DATABASE pos_db;" 2>&1 | Out-Null
+    docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -c "CREATE DATABASE pos_db;" 2>&1 | Out-Null
     
     Write-Host "   Inicializando datos..." -ForegroundColor Yellow
-    docker cp init_db.sql pos_db:/tmp/init_db.sql
+    docker cp docs/almacen_db.sql pos_db:/tmp/almacen_db.sql
     
     if ($LASTEXITCODE -eq 0) {
-        docker-compose exec -T db psql -U postgres -d pos_db -f /tmp/init_db.sql 2>&1 | Out-Null
+        docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -d pos_db -f /tmp/almacen_db.sql 2>&1 | Out-Null
         
         if ($LASTEXITCODE -eq 0) {
             Write-Host "   ✅ Base de datos inicializada correctamente" -ForegroundColor Green
@@ -46,7 +46,7 @@ if ($LASTEXITCODE -ne 0 -or $dbCheck -match "does not exist" -or $dbCheck -match
             Write-Host "   ⚠️  Error al inicializar, pero puedes continuar" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "   ⚠️  No se pudo copiar init_db.sql" -ForegroundColor Yellow
+        Write-Host "   ⚠️  No se pudo copiar docs/almacen_db.sql" -ForegroundColor Yellow
     }
 } else {
     Write-Host "   ✅ Base de datos ya existe y está lista" -ForegroundColor Green
@@ -96,7 +96,7 @@ Write-Host "   👤 cajero / cajero123 (CAJERO)" -ForegroundColor White
 Write-Host "`n💡 Tips:" -ForegroundColor Cyan
 Write-Host "   • Abre http://localhost:8000/docs para probar los endpoints" -ForegroundColor Gray
 Write-Host "   • Usa 'Authorize' (botón verde) para autenticarte" -ForegroundColor Gray
-Write-Host "   • Ver logs: docker-compose logs -f backend" -ForegroundColor Gray
+Write-Host "   • Ver logs: docker compose -f docker/docker-compose.yml logs -f backend" -ForegroundColor Gray
 
 Write-Host "`n" + ("="*60) -ForegroundColor Cyan
 

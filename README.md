@@ -46,16 +46,17 @@ Sistema integral de ERP y Punto de Venta construido a medida según especificaci
 git clone <url-del-repositorio>
 cd ERP
 
-# 2. Crear archivo .env (ver docs/INSTALLATION.md)
-cp .env.example .env  # Si existe, o crear manualmente
+# 2. Crear archivos .env (ver docs/INSTALLATION.md)
+# Backend: cp backend/.env.example backend/.env
+# Frontend: cp frontend/.env.example frontend/.env
 
 # 3. Aplicar migraciones
 psql -U postgres -d almacen_db -f migrations/001_add_venta_fields.sql
 psql -U postgres -d almacen_db -f migrations/002_mejora_precios_acumulado.sql
 psql -U postgres -d almacen_db -f migrations/003_modulo_cobranza.sql
 
-# 4. Iniciar servicios
-docker-compose up -d
+# 4. Iniciar servicios (desde la raíz del proyecto)
+docker compose -f docker/docker-compose.yml up -d
 
 # 5. Acceder
 # Backend: http://localhost:8000/docs
@@ -121,7 +122,7 @@ psql -U postgres -d almacen_db < migrations/002_mejora_precios_acumulado.sql
 psql -U postgres -d almacen_db < migrations/003_modulo_cobranza.sql
 
 # 2. Iniciar todos los servicios
-docker-compose up -d
+docker compose -f docker/docker-compose.yml up -d
 
 # 3. Verificar
 curl http://localhost:8000/health
@@ -140,12 +141,12 @@ curl http://localhost:8000/health
 python -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
 
-# Instalar dependencias
-pip install -r requirements.txt
+# Instalar dependencias del backend
+pip install -r backend/requirements.txt
 
 # Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tu configuración de PostgreSQL
+cp backend/.env.example backend/.env
+# Editar backend/.env con tu configuración de PostgreSQL
 
 # Ejecutar aplicación
 uvicorn backend.app.main:app --reload
@@ -496,13 +497,13 @@ curl http://localhost:8000/health
 ### Logs de Docker
 
 ```bash
-docker-compose logs -f backend
+docker compose -f docker/docker-compose.yml logs -f backend
 ```
 
 ### Conexión a PostgreSQL
 
 ```bash
-docker-compose exec db psql -U postgres -d pos_db
+docker compose -f docker/docker-compose.yml exec db psql -U postgres -d pos_db
 ```
 
 ## 🔧 Configuración
@@ -639,10 +640,12 @@ ERP/
 │   └── instalar_dependencias_windows.ps1
 │
 ├── examples/             # Ejemplos de uso
-├── docker-compose.yml    # Orquestación de servicios
-├── Dockerfile            # Imagen Docker del backend
-├── init_db.sql          # Script de inicialización de BD
-├── requirements.txt      # Dependencias Python
+├── docker/               # Docker
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   └── Dockerfile.prod
+├── backend/              # Backend FastAPI (requirements.txt, openapi.yaml, app/)
+├── docs/                # Documentación (CHANGELOG, INSTALLATION, etc.)
 └── README.md            # Este archivo
 ```
 
@@ -667,6 +670,8 @@ Toda la documentación está organizada profesionalmente en la carpeta `docs/`:
 - **[docs/DIAGRAMA_BASE_DE_DATOS.md](docs/DIAGRAMA_BASE_DE_DATOS.md)** - Diagramas y visualización
 
 ### 📖 Documentación Adicional
+- **[docs/CHANGELOG.md](docs/CHANGELOG.md)** - Historial de cambios
+- **[docs/SOLUCION_LOGIN.md](docs/SOLUCION_LOGIN.md)** - Solución de problemas de login en Docker
 - **[frontend/README.md](frontend/README.md)** - Documentación específica del frontend
 - **[planeacion/ResumenEjecutivoERP.md](planeacion/ResumenEjecutivoERP.md)** - Resumen ejecutivo del proyecto
 
@@ -692,4 +697,4 @@ Para dudas o problemas, revisar:
 - **Documentación completa**: Carpeta `docs/` con guías profesionales
 - **Solución de problemas**: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 - **Referencia rápida**: [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)
-- **Logs de la aplicación**: `docker-compose logs -f` o logs del servidor
+- **Logs de la aplicación**: `docker compose -f docker/docker-compose.yml logs -f` o logs del servidor

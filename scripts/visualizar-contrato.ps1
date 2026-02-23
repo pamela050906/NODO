@@ -2,7 +2,7 @@
 Write-Host "📋 Visualizador de Contrato API" -ForegroundColor Cyan
 Write-Host "================================`n" -ForegroundColor Cyan
 
-$openApiFile = "openapi.yaml"
+$openApiFile = "backend/openapi.yaml"
 
 # Verificar que existe el archivo
 if (-Not (Test-Path $openApiFile)) {
@@ -20,14 +20,14 @@ Write-Host "   Permite probar endpoints directamente`n"
 
 Write-Host "2️⃣  Swagger Editor Online" -ForegroundColor White
 Write-Host "   URL: https://editor.swagger.io/" -ForegroundColor Cyan
-Write-Host "   Copia y pega el contenido de openapi.yaml`n"
+Write-Host "   Copia y pega el contenido de backend/openapi.yaml`n"
 
 Write-Host "3️⃣  VS Code con extensión" -ForegroundColor White
 Write-Host "   Extensión: 'Swagger Viewer' o 'OpenAPI (Swagger) Editor'" -ForegroundColor Cyan
-Write-Host "   Abre openapi.yaml y visualiza con la extensión`n"
+Write-Host "   Abre backend/openapi.yaml y visualiza con la extensión`n"
 
 Write-Host "4️⃣  Importar en Postman" -ForegroundColor White
-Write-Host "   File → Import → Selecciona openapi.yaml" -ForegroundColor Cyan
+Write-Host "   File → Import → Selecciona backend/openapi.yaml" -ForegroundColor Cyan
 Write-Host "   Genera automáticamente colección de requests`n"
 
 Write-Host "5️⃣  Redoc (cuando el backend esté corriendo)" -ForegroundColor White
@@ -57,7 +57,7 @@ $response = Read-Host " "
 if ($response -eq "S" -or $response -eq "s") {
     Start-Process "https://editor.swagger.io/"
     Write-Host "`n✅ Abriendo Swagger Editor..." -ForegroundColor Green
-    Write-Host "   Copia el contenido de openapi.yaml y pégalo en el editor" -ForegroundColor White
+    Write-Host "   Copia el contenido de backend/openapi.yaml y pégalo en el editor" -ForegroundColor White
 }
 
 Write-Host "`n✅ Listo!" -ForegroundColor Green

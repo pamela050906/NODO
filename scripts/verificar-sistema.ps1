@@ -37,11 +37,11 @@ try {
 # 4. Verificar archivos del backend
 Write-Host "`n4. Archivos del Backend" -ForegroundColor Yellow
 $backendFiles = @(
-    "app\main.py",
-    "docker-compose.yml",
-    "Dockerfile",
-    "requirements.txt",
-    "init_db.sql"
+    "backend\app\main.py",
+    "docker\docker-compose.yml",
+    "docker\Dockerfile",
+    "backend\requirements.txt",
+    "docs\almacen_db.sql"
 )
 
 foreach ($file in $backendFiles) {
@@ -82,7 +82,7 @@ if (Test-Path "frontend\node_modules") {
 # 7. Verificar servicios Docker
 Write-Host "`n7. Servicios Docker" -ForegroundColor Yellow
 try {
-    $dockerPS = docker-compose ps --services 2>&1
+    $dockerPS = docker compose -f docker/docker-compose.yml ps --services 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "   ✅ Docker Compose configurado" -ForegroundColor Green
     }
@@ -98,7 +98,7 @@ try {
     $response = Invoke-RestMethod -Uri "http://localhost:8000/health" -Method Get -TimeoutSec 2
     Write-Host "   ✅ Backend corriendo en http://localhost:8000" -ForegroundColor Green
 } catch {
-    Write-Host "   ⚠️  Backend no está corriendo (ejecuta: docker-compose up -d backend)" -ForegroundColor Yellow
+    Write-Host "   ⚠️  Backend no está corriendo (ejecuta: docker compose -f docker/docker-compose.yml up -d backend)" -ForegroundColor Yellow
 }
 
 # Frontend
@@ -111,7 +111,7 @@ try {
 
 # Base de datos
 try {
-    $dbCheck = docker-compose exec -T db psql -U postgres -d pos_db -c "SELECT 1;" 2>&1
+    $dbCheck = docker compose -f docker/docker-compose.yml exec -T db psql -U postgres -d pos_db -c "SELECT 1;" 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "   ✅ Base de datos configurada" -ForegroundColor Green
     } else {

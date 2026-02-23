@@ -2,14 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import POS from './pages/POS';
-import Almacen from './pages/Almacen';
-import Reportes from './pages/Reportes';
-import Facturacion from './pages/Facturacion';
-import Cobranza from './pages/Cobranza';
-import NotFound from './pages/NotFound';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
+import POS from './pages/POS/POS';
+import Almacen from './pages/Almacen/Almacen';
+import Reportes from './pages/Reportes/Reportes';
+import Facturacion from './pages/Facturacion/Facturacion';
+import Cobranza from './pages/Cobranza/Cobranza';
+import NotFound from './pages/NotFound/NotFound';
 import './App.css';
 
 // Componente para rutas protegidas
