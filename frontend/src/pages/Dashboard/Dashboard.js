@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { salesService, inventoryService } from '../services/apiService';
-import { formatearMoneda } from '../utils/helpers';
-import { COLORES } from '../utils/constants';
+import Layout from '../../components/Layout';
+import { salesService, inventoryService } from '../../services/apiService';
+import { formatearMoneda } from '../../utils/helpers';
+import { COLORES } from '../../utils/constants';
 import { DollarSign, TrendingUp, AlertTriangle, Package, ShoppingCart, BarChart3, CheckCircle, Clock, XCircle } from 'lucide-react';
-import { Card, CardHeader, CardContent, Badge, Button, StatCardSkeleton, TableSkeleton } from '../components/ui';
+import { Card, CardHeader, CardContent, Badge, Button, StatCardSkeleton, TableSkeleton } from '../../components/ui';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const CHART = {

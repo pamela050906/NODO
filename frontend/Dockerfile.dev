@@ -16,8 +16,16 @@ RUN npm install
 # Copiar el resto de la aplicación
 COPY . .
 
+# Copiar, convertir line endings (CRLF→LF) y hacer ejecutable el script de entrada
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Exponer puerto
 EXPOSE 3000
+
+# Usar el script de entrada para configurar variables de entorno
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Comando para desarrollo
 CMD ["npm", "start"]

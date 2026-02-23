@@ -1,3 +1,4 @@
+# Contexto de build: raíz del proyecto (docker compose -f docker/docker-compose.yml)
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -8,16 +9,13 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements e instalar dependencias
-COPY requirements.txt .
+# Copiar requirements del backend e instalar dependencias
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código de la aplicación
-# El backend vive en backend/app dentro del repo
-COPY ./backend/app ./app
+COPY backend/app ./app
 
-# Exponer puerto
 EXPOSE 8000
 
-# Comando de inicio
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { cobranzaService } from '../services/apiService';
+import Layout from '../../components/Layout';
+import { cobranzaService } from '../../services/apiService';
 import { Wallet, RefreshCw, AlertTriangle, CheckCircle, CreditCard } from 'lucide-react';
+import './Cobranza.css';
 
 function Cobranza() {
   const [cuentas, setCuentas] = useState([]);

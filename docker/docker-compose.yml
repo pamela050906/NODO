@@ -1,3 +1,4 @@
+# Ejecutar desde la raíz del proyecto: docker compose -f docker/docker-compose.yml up -d
 services:
   db:
     image: postgres:15-alpine
@@ -11,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # Script de inicialización: esquema + roles + datos base + usuarios (Admin/admin123, Cajero/cajero123)
-      - ./docs/almacen_db.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ../docs/almacen_db.sql:/docker-entrypoint-initdb.d/01_schema.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -19,14 +20,16 @@ services:
       retries: 5
 
   backend:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: pos_backend
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/almacen_db
     volumes:
-      - ./backend/app:/app/app
+      - ../backend/app:/app/app
     depends_on:
       db:
         condition: service_healthy
@@ -34,22 +37,18 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ../frontend
       dockerfile: Dockerfile.dev
     container_name: pos_frontend
     ports:
       - "3000:3000"
     environment:
-      # IMPORTANTE: Desde el navegador del host, localhost:8000 apunta al backend
-      # Si el frontend necesita conectarse desde dentro del contenedor, usaría 'http://backend:8000'
-      # Pero como las peticiones se hacen desde el navegador, localhost:8000 es correcto
       - REACT_APP_API_URL=http://localhost:8000
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
-      # Montar .env para que React lo lea (se crea dinámicamente por docker-entrypoint.sh)
-      - ./frontend/.env:/app/.env
+      - ../frontend/src:/app/src
+      - ../frontend/public:/app/public
+      - ../frontend/.env:/app/.env
     depends_on:
       - backend
     stdin_open: true

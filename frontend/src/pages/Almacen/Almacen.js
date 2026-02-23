@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { productService, inventoryService } from '../services/apiService';
+import Layout from '../../components/Layout';
+import { productService, inventoryService } from '../../services/apiService';
 import { Package, ClipboardList, BarChart3, TrendingUp, Plus, Tag, FileUp } from 'lucide-react';
+import './Almacen.css';
 
 function Almacen() {
   const [activeTab, setActiveTab] = useState('productos');

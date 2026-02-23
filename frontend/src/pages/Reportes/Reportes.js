@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
-import { reportesService } from '../services/apiService';
+import Layout from '../../components/Layout';
+import { reportesService } from '../../services/apiService';
 import { BarChart3, Download, FileSpreadsheet, CheckCircle, Clock } from 'lucide-react';
+import './Reportes.css';
 
 function Reportes() {
   const [tipoReporte, setTipoReporte] = useState('ventas');

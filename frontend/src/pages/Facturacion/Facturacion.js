@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { facturacionService, salesService } from '../services/apiService';
+import Layout from '../../components/Layout';
+import { facturacionService, salesService } from '../../services/apiService';
 import { Receipt, Plus, Globe, FileText, CreditCard, ShoppingCart, ClipboardList } from 'lucide-react';
 import './Facturacion.css';
 
