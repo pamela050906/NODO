@@ -1,123 +1,155 @@
 /**
- * Paleta de colores corporativa - Sistema ERP (única fuente de verdad)
- * Uso: siempre var(--erp-*) en CSS; en JS usar utils/constants.js COLORES.
+ * Sistema de Diseño ERP 2026 — Glassmorphism + Dark Sidebar
  *
- * Primario #2f4156: barra superior, menús, títulos, cabeceras tabla
- * Secundario #567c8d: botones destacados, iconos activos, enlaces
- * Fondo principal #ffffff: cards, formularios, modales
- * Fondo suave #f5efeb: área de trabajo, paneles, card-footer
- * Resaltado #c8d9e6: hover, bordes suaves, notificaciones
+ * Primario #1e293b → sidebar, headers
+ * Secundario #567c8d → acentos secundarios
+ * Acento #f59e0b → estados activos, indicadores
+ * Fondo #f1f5f9 → área de trabajo
+ * Glass: rgba(255,255,255,0.6) + backdrop-blur
  */
 :root {
-  /* Paleta principal */
-  --erp-primary: #2f4156;
+  /* ─── Paleta principal ─── */
+  --erp-primary: #1e293b;
+  --erp-primary-light: #334155;
+  --erp-primary-hover: #475569;
   --erp-secondary: #567c8d;
+  --erp-accent: #f59e0b;
+  --erp-accent-hover: #d97706;
+  --erp-accent-soft: rgba(245, 158, 11, 0.12);
+
+  /* ─── Fondos ─── */
   --erp-bg-main: #ffffff;
-  --erp-bg-soft: #f5efeb;
+  --erp-bg-soft: #f1f5f9;
+  --erp-bg-page: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
   --erp-highlight: #c8d9e6;
 
-  /* Override Bootstrap 5 para usar la paleta ERP */
-  --bs-primary: #2f4156;
-  --bs-primary-rgb: 47, 65, 86;
+  /* ─── Sidebar ─── */
+  --erp-sidebar-bg: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  --erp-sidebar-width: 260px;
+  --erp-sidebar-collapsed: 78px;
+  --erp-sidebar-text: rgba(255, 255, 255, 0.7);
+  --erp-sidebar-text-active: #ffffff;
+  --erp-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --erp-sidebar-active-bg: rgba(245, 158, 11, 0.12);
+  --erp-sidebar-border: rgba(255, 255, 255, 0.06);
+
+  /* ─── Glassmorphism ─── */
+  --erp-glass-bg: rgba(255, 255, 255, 0.65);
+  --erp-glass-border: rgba(255, 255, 255, 0.35);
+  --erp-glass-blur: 16px;
+  --erp-glass-bg-dark: rgba(30, 41, 59, 0.4);
+  --erp-glass-border-dark: rgba(255, 255, 255, 0.08);
+  --erp-glass-blur-dark: 20px;
+
+  /* ─── Bootstrap overrides ─── */
+  --bs-primary: #1e293b;
+  --bs-primary-rgb: 30, 41, 59;
   --bs-secondary: #567c8d;
   --bs-secondary-rgb: 86, 124, 141;
-
-  /* Enlaces y estados activos usan secundario */
   --bs-link-color: #567c8d;
   --bs-link-hover-color: #456a7a;
   --bs-link-color-rgb: 86, 124, 141;
+  --bs-border-color: rgba(203, 213, 225, 0.5);
+  --erp-border: rgba(203, 213, 225, 0.5);
 
-  /* Bordes suaves alineados al tema */
-  --bs-border-color: #c8d9e6;
-  --erp-border: #c8d9e6;
+  /* ─── Tabla ─── */
+  --erp-table-header-bg: #1e293b;
+  --erp-table-hover-bg: rgba(200, 217, 230, 0.35);
 
-  /* Tablas: cabecera primario, hover highlight */
-  --erp-table-header-bg: #2f4156;
-  --erp-table-hover-bg: #c8d9e6;
+  /* ─── Sombras modernas ─── */
+  --erp-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --erp-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --erp-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --erp-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --erp-shadow-glow: 0 0 20px rgba(245, 158, 11, 0.15);
 
-  /* Sombras sutiles */
-  --erp-shadow-sm: 0 1px 3px rgba(47, 65, 86, 0.08);
-  --erp-shadow: 0 2px 8px rgba(47, 65, 86, 0.1);
-  --erp-shadow-hover: 0 4px 12px rgba(47, 65, 86, 0.12);
+  /* ─── Semánticos ─── */
+  --erp-success: #10b981;
+  --erp-success-bg: rgba(16, 185, 129, 0.08);
+  --erp-success-border: rgba(16, 185, 129, 0.2);
+  --erp-success-text: #065f46;
+  --erp-danger: #ef4444;
+  --erp-danger-bg: rgba(239, 68, 68, 0.08);
+  --erp-danger-border: rgba(239, 68, 68, 0.2);
+  --erp-danger-text: #991b1b;
+  --erp-warning: #f59e0b;
+  --erp-warning-bg: rgba(245, 158, 11, 0.08);
+  --erp-warning-border: rgba(245, 158, 11, 0.2);
+  --erp-warning-text: #92400e;
+  --erp-info: #3b82f6;
+  --erp-info-bg: rgba(59, 130, 246, 0.08);
+  --erp-info-border: rgba(59, 130, 246, 0.2);
+  --erp-info-text: #1e40af;
 
-  /* Semánticos (éxito, error, advertencia, info) unificados en el tema */
-  --erp-success: #28a745;
-  --erp-success-bg: #d4edda;
-  --erp-success-border: #c3e6cb;
-  --erp-success-text: #155724;
-  --erp-danger: #dc3545;
-  --erp-danger-bg: #f8d7da;
-  --erp-danger-border: #f5c6cb;
-  --erp-danger-text: #721c24;
-  --erp-warning: #ffc107;
-  --erp-warning-bg: #fff3cd;
-  --erp-warning-border: #ffeaa7;
-  --erp-warning-text: #856404;
-  --erp-info: #17a2b8;
-  --erp-info-bg: #d1ecf1;
-  --erp-info-border: #bee5eb;
-  --erp-info-text: #0c5460;
+  /* ─── Tipografía ─── */
+  --erp-font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Hover del primario (oscurecimiento) */
-  --erp-primary-hover: #3d5266;
-
-  /* Tipografía */
-  --erp-font: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  /* Contraste: texto sobre fondos */
+  /* ─── Texto ─── */
   --erp-text-on-dark: #ffffff;
-  --erp-text-on-light: #2f4156;
+  --erp-text-on-light: #1e293b;
+  --erp-text-muted: #64748b;
+
+  /* ─── Radii ─── */
+  --erp-radius-sm: 8px;
+  --erp-radius: 12px;
+  --erp-radius-lg: 16px;
+  --erp-radius-xl: 20px;
+
+  /* ─── Transiciones ─── */
+  --erp-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --erp-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Navbar: barra superior con color primario */
-.navbar.bg-erp-primary,
-.navbar.navbar-erp {
-  background-color: var(--erp-primary) !important;
-}
-
-.navbar-dark.navbar-erp .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-.navbar.navbar-erp .navbar-brand,
-.navbar.navbar-erp .nav-link {
-  color: var(--erp-text-on-dark) !important;
-  font-family: var(--erp-font);
-}
-.navbar.navbar-erp .nav-link {
-  opacity: 0.95;
-}
-.navbar.navbar-erp .nav-link.active,
-.navbar.navbar-erp .nav-link:hover,
-.navbar.navbar-erp .nav-link:focus {
-  opacity: 1;
-}
-
-.navbar.navbar-erp .nav-link:hover,
-.navbar.navbar-erp .nav-link:focus {
-  background-color: var(--erp-highlight) !important;
-  color: var(--erp-text-on-light) !important;
-  border-radius: 6px;
-}
-
-.navbar.navbar-erp .nav-link.active {
-  background-color: var(--erp-secondary) !important;
-  color: var(--erp-text-on-dark) !important;
-}
-
-.navbar.navbar-erp .navbar-toggler {
-  border-color: rgba(255, 255, 255, 0.5);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Tipografía Montserrat en todo el sistema */
+/* ═══════════════════════════════════════
+   TIPOGRAFÍA GLOBAL
+   ═══════════════════════════════════════ */
 button, input, select, textarea, .form-control, .btn,
 .table, .card, .card-title, .card-text, .modal-title, label,
 .alert, .badge, .nav-link, .navbar-brand {
   font-family: var(--erp-font) !important;
 }
 
-/* Contraste: texto claro sobre fondos oscuros (cards, cabeceras tabla) */
+/* ═══════════════════════════════════════
+   BOTONES CON PALETA ERP
+   ═══════════════════════════════════════ */
+.btn-primary {
+  background-color: var(--erp-primary) !important;
+  border-color: var(--erp-primary) !important;
+  color: var(--erp-text-on-dark) !important;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--erp-primary-hover) !important;
+  border-color: var(--erp-primary-hover) !important;
+  box-shadow: var(--erp-shadow-hover);
+}
+
+.btn-secondary:not(.bg-secondary) {
+  background-color: var(--erp-secondary) !important;
+  border-color: var(--erp-secondary) !important;
+  color: var(--erp-text-on-dark) !important;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--erp-highlight) !important;
+  border-color: var(--erp-secondary) !important;
+  color: var(--erp-text-on-light) !important;
+}
+
+.btn-success {
+  color: var(--erp-text-on-dark) !important;
+}
+.btn-danger {
+  color: var(--erp-text-on-dark) !important;
+}
+.btn-info {
+  color: var(--erp-text-on-dark) !important;
+}
+.btn-warning {
+  color: var(--erp-text-on-light) !important;
+}
+
+/* ═══════════════════════════════════════
+   CARDS GLASSMORPHISM
+   ═══════════════════════════════════════ */
 .card.bg-primary,
 .card.bg-success,
 .card.bg-info,
@@ -141,7 +173,6 @@ button, input, select, textarea, .form-control, .btn,
   color: var(--erp-text-on-dark) !important;
 }
 
-/* Fondo amarillo (warning): texto oscuro para legibilidad */
 .card.bg-warning,
 .card-header.bg-warning {
   color: var(--erp-text-on-light) !important;
@@ -153,60 +184,12 @@ button, input, select, textarea, .form-control, .btn,
   color: var(--erp-text-on-light) !important;
 }
 
-/* Botones: texto claro sobre fondo oscuro; warning con texto oscuro */
-.btn-primary,
-.btn-secondary,
-.btn-success,
-.btn-danger,
-.btn-info {
-  color: var(--erp-text-on-dark) !important;
-}
-.btn-warning {
-  color: var(--erp-text-on-light) !important;
-}
-
-/* Botones primarios y secundarios con paleta */
-.btn-primary {
-  background-color: var(--erp-primary) !important;
-  border-color: var(--erp-primary) !important;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: var(--erp-primary-hover) !important;
-  border-color: var(--erp-primary-hover) !important;
-  box-shadow: var(--erp-shadow-hover);
-}
-
-.btn-secondary,
-.btn-outline-primary {
-  color: var(--erp-secondary);
-  border-color: var(--erp-secondary);
-}
-
-.btn-secondary:not(.bg-secondary) {
-  background-color: var(--erp-secondary) !important;
-  border-color: var(--erp-secondary) !important;
-  color: var(--erp-text-on-dark) !important;
-}
-
-.btn-secondary:hover:not(:disabled),
-.btn-outline-primary:hover:not(:disabled) {
-  background-color: var(--erp-highlight) !important;
-  border-color: var(--erp-secondary) !important;
-  color: var(--erp-text-on-light) !important;
-}
-
-/* Cards y paneles: fondo suave */
-.card.bg-erp-soft,
-.panel-erp {
-  background-color: var(--erp-bg-soft) !important;
-  border-color: var(--erp-border) !important;
-}
-
-/* Hover genérico en filas y cards */
+/* ═══════════════════════════════════════
+   TABLAS
+   ═══════════════════════════════════════ */
 .table-hover tbody tr:hover,
 .table tbody tr:hover {
-  background-color: var(--erp-highlight) !important;
+  background-color: var(--erp-table-hover-bg) !important;
 }
 
 .card-hover:hover,
@@ -215,7 +198,9 @@ button, input, select, textarea, .form-control, .btn,
   box-shadow: var(--erp-shadow-hover) !important;
 }
 
-/* Títulos principales con color primario */
+/* ═══════════════════════════════════════
+   TÍTULOS Y TEXTO
+   ═══════════════════════════════════════ */
 .page-title,
 .card-title:not([class*="text-success"]):not([class*="text-white"]):not([class*="text-danger"]):not([class*="text-warning"]) {
   color: var(--erp-primary) !important;
@@ -225,21 +210,24 @@ button, input, select, textarea, .form-control, .btn,
   color: var(--erp-primary) !important;
 }
 
-/* Enlaces */
+/* ═══════════════════════════════════════
+   ENLACES
+   ═══════════════════════════════════════ */
 a {
   color: var(--erp-secondary);
 }
-
 a:hover {
   color: var(--erp-primary);
 }
 
-/* Focus accesible */
+/* ═══════════════════════════════════════
+   FOCUS ACCESIBLE
+   ═══════════════════════════════════════ */
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--erp-secondary);
+  outline: 2px solid var(--erp-accent);
   outline-offset: 2px;
 }
 
@@ -249,8 +237,10 @@ textarea:focus-visible {
   box-shadow: 0 0 0 0.2rem rgba(86, 124, 141, 0.25);
 }
 
-/* Card footer y elementos secundarios */
+/* ═══════════════════════════════════════
+   CARD FOOTER
+   ═══════════════════════════════════════ */
 .card-footer {
-  background-color: var(--erp-bg-soft) !important;
+  background-color: rgba(241, 245, 249, 0.5) !important;
   border-top: 1px solid var(--erp-border) !important;
 }

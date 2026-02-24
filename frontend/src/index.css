@@ -1,6 +1,8 @@
-/* ==================== ESTILOS BASE ==================== */
+/* ═══════════════════════════════════════
+   ESTILOS BASE — ERP 2026
+   ═══════════════════════════════════════ */
 
-/* ==================== BASE RESET ==================== */
+/* ─── RESET ─── */
 * {
   margin: 0;
   padding: 0;
@@ -24,27 +26,27 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-  background: var(--erp-bg-soft);
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background: rgba(241, 245, 249, 0.7);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.9em;
   border: 1px solid var(--erp-border);
 }
 
-/* ==================== ROOT ELEMENT ==================== */
+/* ─── ROOT ─── */
 #root {
   min-height: 100vh;
 }
 
-/* ==================== TYPOGRAPHY ==================== */
+/* ─── TIPOGRAFÍA ─── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--erp-font);
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5rem;
   color: var(--erp-text-on-light);
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -61,16 +63,16 @@ a:hover {
   color: var(--erp-primary);
 }
 
-/* ==================== FOCUS STATES ==================== */
+/* ─── FOCUS ─── */
 button:focus,
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid var(--erp-secondary);
+  outline: 2px solid var(--erp-accent);
   outline-offset: 2px;
 }
 
-/* ==================== DISABLED STATES ==================== */
+/* ─── DISABLED ─── */
 button:disabled,
 input:disabled,
 select:disabled,
@@ -79,15 +81,20 @@ textarea:disabled {
   opacity: 0.6;
 }
 
-/* ==================== PRINT STYLES ==================== */
+/* ─── PRINT ─── */
 @media print {
   body {
     background: var(--erp-bg-main);
   }
-  
-  .navbar,
+
+  .erp-sidebar,
+  .erp-mobile-toggle,
   .btn,
   button {
     display: none !important;
+  }
+
+  .erp-main-wrapper {
+    margin-left: 0 !important;
   }
 }

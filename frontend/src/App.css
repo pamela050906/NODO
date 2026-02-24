@@ -1,53 +1,64 @@
-/* ==================== APP CONTAINER ==================== */
+/* ═══════════════════════════════════════
+   APP CONTAINER
+   ═══════════════════════════════════════ */
 .App {
   min-height: 100vh;
-  background: var(--erp-bg-soft);
+  background: var(--erp-bg-page);
 }
 
-/* ==================== ANIMACIONES GLOBALES ==================== */
+/* ═══════════════════════════════════════
+   ANIMACIONES GLOBALES
+   ═══════════════════════════════════════ */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-/* Aplicar animación de entrada a las páginas */
-.App > * {
-  animation: fadeIn 0.5s ease;
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-/* ==================== SELECCIÓN DE TEXTO ==================== */
+/* ═══════════════════════════════════════
+   SELECCIÓN DE TEXTO
+   ═══════════════════════════════════════ */
 ::selection {
-  background: var(--erp-highlight);
+  background: rgba(245, 158, 11, 0.2);
   color: var(--erp-primary);
 }
 
 ::-moz-selection {
-  background: var(--erp-highlight);
+  background: rgba(245, 158, 11, 0.2);
   color: var(--erp-primary);
+}
+
+/* ═══════════════════════════════════════
+   SCROLLBAR GLOBAL
+   ═══════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.35);
 }

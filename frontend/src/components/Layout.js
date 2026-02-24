@@ -1,13 +1,53 @@
-import React from 'react';
-import Navbar from './Navbar';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Sidebar from './Sidebar';
+import TopNavbar from './TopNavbar';
 
 function Layout({ children }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Sincroniza mobile con resize
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 768) setMobileOpen(false);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const sidebarWidth = collapsed ? 78 : 260;
+
   return (
-    <div className="min-vh-100" style={{ background: 'var(--erp-bg-soft)' }}>
-      <Navbar />
-      <main className="container-fluid py-3 py-md-4 px-2 px-md-3 px-lg-4" style={{maxWidth: '1400px', margin: '0 auto'}}>
-        {children}
-      </main>
+    <div className="erp-layout">
+      <Sidebar
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+      />
+
+      {/* Wrapper principal — se desplaza según el ancho del sidebar */}
+      <div
+        className="erp-main-wrapper"
+        style={{ marginLeft: sidebarWidth }}
+      >
+        <TopNavbar
+          mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}
+        />
+
+        <main className="erp-main-content">
+          <motion.div
+            key={window.location.pathname}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          >
+            {children}
+          </motion.div>
+        </main>
+      </div>
     </div>
   );
 }
