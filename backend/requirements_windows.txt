@@ -6,15 +6,12 @@
 # Core Framework
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
-pydantic==2.5.3
-pydantic-settings==2.1.0
+pydantic>=2.10,<3
+pydantic-settings>=2.5,<3
 
-# Database - Versiones con mejor soporte Windows
+# Database - sin paquetes que requieran compilación en Windows
 sqlalchemy==2.0.25
-# asyncpg puede requerir compilación, intentar versión más antigua con wheel
-asyncpg==0.28.0
-# psycopg2-binary - omitir si falla, no es crítico
-# psycopg2-binary==2.9.9
+psycopg[binary]>=3.1.18
 alembic==1.13.1
 
 # Authentication

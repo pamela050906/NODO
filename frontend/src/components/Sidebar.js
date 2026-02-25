@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   Store,
   LayoutDashboard,
@@ -49,56 +48,35 @@ function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
     ? user.username.slice(0, 2).toUpperCase()
     : 'US';
 
-  // Variantes de texto (label/sección) — fade lateral
-  const labelVariants = {
-    visible: { opacity: 1, x: 0 },
-    hidden:  { opacity: 0, x: -6 },
-  };
-
   return (
     <>
-      {/* Overlay en mobile */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="erp-sidebar-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setMobileOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+      {/* Overlay en mobile (Bootstrap-style: simple capa fija) */}
+      {mobileOpen && (
+        <div
+          className="erp-sidebar-overlay"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
 
-      {/* Sidebar */}
-      <motion.aside
-        className={`erp-sidebar${collapsed ? ' erp-sidebar--collapsed' : ''}${mobileOpen ? ' erp-sidebar--mobile-open' : ''}`}
-        animate={{ width: collapsed ? 78 : 260 }}
-        transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+      {/* Sidebar fijo usando utilidades de Bootstrap + CSS propio */}
+      <aside
+        className={`erp-sidebar${collapsed ? ' erp-sidebar--collapsed' : ''}${
+          mobileOpen ? ' erp-sidebar--mobile-open' : ''
+        } d-flex flex-column`}
       >
         <div className="erp-sidebar__inner">
-
           {/* ── Header / Logo ── */}
           <div className="erp-sidebar__header">
             <Link to="/dashboard" className="erp-sidebar__logo" tabIndex={-1}>
               <div className="erp-sidebar__logo-icon">
                 <Store size={20} strokeWidth={2.2} />
               </div>
-              <AnimatePresence>
-                {!collapsed && (
-                  <motion.div
-                    className="erp-sidebar__logo-text"
-                    variants={labelVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    transition={{ duration: 0.2 }}
-                  >
-                    <span className="erp-sidebar__brand">ERP</span>
-                    <span className="erp-sidebar__brand-sub">Sistema POS</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {!collapsed && (
+                <div className="erp-sidebar__logo-text">
+                  <span className="erp-sidebar__brand">ERP</span>
+                  <span className="erp-sidebar__brand-sub">Sistema POS</span>
+                </div>
+              )}
             </Link>
 
             {/* Botón colapsar (desktop) */}
@@ -124,20 +102,11 @@ function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
           <nav className="erp-sidebar__nav">
             {Object.entries(groupedNav).map(([section, items]) => (
               <div key={section} className="erp-sidebar__section">
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span
-                      className="erp-sidebar__section-label"
-                      variants={labelVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      transition={{ duration: 0.15 }}
-                    >
-                      {sectionLabels[section]}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+                {!collapsed && (
+                  <span className="erp-sidebar__section-label">
+                    {sectionLabels[section]}
+                  </span>
+                )}
 
                 {items.map((item) => {
                   const Icon = item.icon;
@@ -151,48 +120,32 @@ function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
                     >
                       <Link
                         to={item.path}
-                        className={`erp-sidebar__link${active ? ' erp-sidebar__link--active' : ''}`}
+                        className={`erp-sidebar__link${
+                          active ? ' erp-sidebar__link--active' : ''
+                        }`}
                       >
                         {active && (
-                          <motion.div
+                          <div
                             className="erp-sidebar__active-indicator"
-                            layoutId="activeIndicator"
-                            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                            aria-hidden="true"
                           />
                         )}
                         <span className="erp-sidebar__link-icon">
                           <Icon size={19} strokeWidth={active ? 2.2 : 1.8} />
                         </span>
-                        <AnimatePresence>
-                          {!collapsed && (
-                            <motion.span
-                              className="erp-sidebar__link-label"
-                              variants={labelVariants}
-                              initial="hidden"
-                              animate="visible"
-                              exit="hidden"
-                              transition={{ duration: 0.15 }}
-                            >
-                              {item.label}
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
+                        {!collapsed && (
+                          <span className="erp-sidebar__link-label">
+                            {item.label}
+                          </span>
+                        )}
                       </Link>
 
                       {/* Tooltip sólo en modo colapsado */}
-                      <AnimatePresence>
-                        {collapsed && hoveredItem === item.path && (
-                          <motion.div
-                            className="erp-sidebar__tooltip"
-                            initial={{ opacity: 0, x: -6 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -6 }}
-                            transition={{ duration: 0.15 }}
-                          >
-                            {item.label}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      {collapsed && hoveredItem === item.path && (
+                        <div className="erp-sidebar__tooltip">
+                          {item.label}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -204,46 +157,29 @@ function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
           <div className="erp-sidebar__footer">
             <div className="erp-sidebar__user">
               <div className="erp-sidebar__avatar">{userInitials}</div>
-              <AnimatePresence>
-                {!collapsed && (
-                  <motion.div
-                    className="erp-sidebar__user-info"
-                    variants={labelVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    transition={{ duration: 0.15 }}
-                  >
-                    <span className="erp-sidebar__username">{user?.username || 'Usuario'}</span>
-                    <span className="erp-sidebar__role">{user?.rol || 'N/A'}</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {!collapsed && (
+                <div className="erp-sidebar__user-info">
+                  <span className="erp-sidebar__username">
+                    {user?.username || 'Usuario'}
+                  </span>
+                  <span className="erp-sidebar__role">{user?.rol || 'N/A'}</span>
+                </div>
+              )}
             </div>
 
             <button
-              className="erp-sidebar__logout"
-              onClick={() => { logout(); }}
+              className="erp-sidebar__logout btn btn-sm btn-block text-start d-flex align-items-center gap-2"
+              onClick={() => {
+                logout();
+              }}
               title="Cerrar sesión"
             >
               <LogOut size={17} />
-              <AnimatePresence>
-                {!collapsed && (
-                  <motion.span
-                    variants={labelVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    transition={{ duration: 0.15 }}
-                  >
-                    Salir
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              {!collapsed && <span>Salir</span>}
             </button>
           </div>
         </div>
-      </motion.aside>
+      </aside>
     </>
   );
 }

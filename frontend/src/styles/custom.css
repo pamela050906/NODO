@@ -34,12 +34,20 @@
   top: 0;
   left: 0;
   height: 100vh;
+  width: var(--erp-sidebar-width);
   z-index: 1040;
   background: var(--erp-sidebar-bg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--erp-sidebar-border);
+  /* Transición por CSS (fluida); capa propia para menos repaints */
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.erp-sidebar--collapsed {
+  width: var(--erp-sidebar-collapsed);
 }
 
 .erp-sidebar__inner {
