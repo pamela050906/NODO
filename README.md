@@ -5,6 +5,7 @@ Sistema integral de ERP y Punto de Venta construido a medida según especificaci
 **Estado**: ✅ **IMPLEMENTACIÓN COMPLETA**  
 **Fecha**: 2026-01-21  
 **Versión**: 1.0.0
+**Elaborado por**: Fernando Acuña Martínez, Ana Karen López Jiménez, Frida Sofía Escamilla Olguín, Pamela Ruíz Velasco 
 
 ---
 
