@@ -1,4 +1,4 @@
-# 🏪 Sistema ERP/POS YOMYOM - COMPLETO
+# 🏪 Sistema ERP
 
 Sistema integral de ERP y Punto de Venta construido a medida según especificaciones del cliente.
 
